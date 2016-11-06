@@ -22,3 +22,7 @@
 # pkg.status() {
 #     git.diffstat
 # }
+
+pkg.install() {
+  git clone --recursive https://github.com/Eriner/zim.git ${PKG_PATH}/zim
+}
