@@ -22,3 +22,9 @@ eval "$(fasd --init auto)"
 
 # Aliases
 alias j='fasd_cd -i'
+
+
+# Prompt
+autoload -U promptinit; promptinit
+PURE_PROMPT_SYMBOL=λ
+prompt pure

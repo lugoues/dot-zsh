@@ -24,5 +24,6 @@
 # }
 
 pkg.install() {
+  echo "Installing Zim"
   git clone --recursive https://github.com/Eriner/zim.git ${PKG_PATH}/zim
 }
