@@ -1,13 +1,12 @@
-
-
 #
 # User configuration sourced by interactive shells
 #
 
-# Source zim
-if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
-  source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
-fi
+# ZIM {{{
+  if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
+    source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
+  fi
+#}}}
 
 source ~/.aliases
 path=(
@@ -16,15 +15,16 @@ path=(
   $path
 )
 
-export GPG_TTY=$(tty)
+# GPG {{{
+  export GPG_TTY=$(tty)
+#}}}
 
-eval "$(fasd --init auto)"
+# FASD {{{
+  eval "$(fasd --init auto)"
+  alias j='fasd_cd -i'
+#}}}
 
-# Aliases
-alias j='fasd_cd -i'
-
-
-# Prompt
-autoload -U promptinit; promptinit
-PURE_PROMPT_SYMBOL=λ
-prompt pure
+# Prompt {{{
+  # Make branch italic
+  zstyle ':vcs_info:git*' formats " `tput sitm`%b`tput ritm`" "x%R"
+#}}}

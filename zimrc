@@ -24,7 +24,8 @@ zmodules=(directory environment git history input utility meta custom ssh archiv
 #
 
 # Set your desired prompt here
-zprompt_theme='steeef'
+zprompt_theme='pure'
+  PURE_PROMPT_SYMBOL=λ
 
 #
 # Completion
