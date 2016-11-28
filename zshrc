@@ -8,6 +8,14 @@
   fi
 #}}}
 
+# Ellipsis {{{
+  fpath=(
+    $HOME/.ellipsis/comp
+    $fpath
+)
+  autoload -U compinit; compinit
+# }}}
+
 # Path {{{
 path=(
   ~/.ellipsis/bin
