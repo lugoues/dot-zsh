@@ -8,6 +8,8 @@ pkg.install() {
 }
 
 pkg.pull() {
+  helper git.pull
+
   echo "$(tput setaf 2)Updating Zim.$(tput sgr0)"
   zsh ./zim/tools/zim_update
 }
