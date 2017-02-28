@@ -83,8 +83,8 @@ zhighlighters=(main brackets cursor)
 #
 
 # Load these ssh identities with the ssh module
-zssh_ids=(id_rsa)
-
+# zssh_ids=(id_rsa)
+zssh_ids=(nothing)
 
 #
 # Pacman
