@@ -8,9 +8,10 @@
   fi
 #}}}
 
-# Ellipsis {{{
+# Fpath {{{
   fpath=(
     $HOME/.ellipsis/comp
+    /usr/local/share/zsh-completions
     $fpath
 )
   autoload -U compinit; compinit
@@ -23,13 +24,14 @@ if [ -x /usr/libexec/path_helper ]; then
 fi
 
 path=(
+  ~/.local/bin
+  ~/.cargo/bin
   ~/.ellipsis/bin
-  ~/.local/bin/
   $(brew --prefix &> /dev/null && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
   $path
 )
 #}}}
-
+  source ~/.nix-profile/etc/profile.d/nix.sh
 
 # Settings {{{
   #set history to largest possible
@@ -53,10 +55,10 @@ path=(
   export GPG_TTY=$(tty)
 #}}}
 
-## FASD {{{
-#  eval "$(fasd --init auto)"
-#  alias j='fasd_cd -i'
-##}}}
+# FASD {{{
+  eval "$(fasd --init auto)"
+  alias j='fasd_cd -i'
+#}}}
 
 # Prompt {{{
   # Make branch italic
@@ -77,9 +79,10 @@ path=(
 alias ssh='TERM=xterm-256color ssh'
 alias brew='TERM=xterm-256color brew'
 alias cmus='cmus_tmux -n music cmus'
+alias tmux='TERM=xterm-256color tmux'
 
 alias pbdecrypt="pbpaste  | gpg2 -d | pbcopy"
-alias pbencrypt="pbpaste | gpg2 -e | pbcopy"
+alias pbencrypt="pbpaste | gpg2 -e --armor | pbcopy"
 #jira
 alias jwla='jira worklogadd '
 alias jwlay='jira worklogadd -s $(/bin/date -v-1d +%m/%d/%y) '
@@ -100,8 +103,23 @@ alias vim='nvim'
     aws-keychain exec $argv[1] aws ${argv:2}
   }
 
+
+  aws-l () {
+    aws-lpass exec $argv[1] aws ${argv:2}
+  }
+#}}}
+
+
+
+# fzf {{{
+  # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+  # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+  # bind -x '"\C-p": vim $(fzf);'
+#}}}
+#
+
 # pyenv {{{
-  export PYENV_ROOT=/Users/pbrunner/.local/share/pyenv
+  export PYENV_ROOT=~/.local/share/pyenv
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
