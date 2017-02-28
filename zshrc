@@ -99,4 +99,10 @@ alias vim='nvim'
     fi
     aws-keychain exec $argv[1] aws ${argv:2}
   }
+
+# pyenv {{{
+  export PYENV_ROOT=/Users/pbrunner/.local/share/pyenv
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 #}}}
