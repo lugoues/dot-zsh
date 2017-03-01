@@ -31,7 +31,7 @@ path=(
   $path
 )
 #}}}
-  source ~/.nix-profile/etc/profile.d/nix.sh
+[[ -s "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
 # Settings {{{
   #set history to largest possible
@@ -121,6 +121,16 @@ alias vim='nvim'
 # pyenv {{{
   export PYENV_ROOT=~/.local/share/pyenv
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+  if (( $+commands[pyenv] )) ; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+  fi
+#}}}
+
+
+# rbenv {{{
+  export rvm_path=~/.local/share/rvm
+  export PATH="$PATH:$HOME/.rvm/bin"
+  if (( $+commands[rvm] )) ; then
+  fi
 #}}}
