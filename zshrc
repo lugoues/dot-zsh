@@ -2,36 +2,50 @@
 # User configuration sourced by interactive shells
 #
 
-# ZIM {{{
-  if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
-    source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
+# zplug {{{
+  export ZPLUG_HOME=$HOME/.zplug
+  if [[ ! -f $ZPLUG_HOME/init.zsh ]]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
   fi
+
+  source ~/.zplug/init.zsh
+
+  zplug "zplug/zplug", hook-build:"zplug --self-manage"
+  zplug "zimframework/zim", \
+    as:plugin, \
+    use:"init.zsh", \
+    hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim", \
+    hook-load:"_zim_hook_load"
+  zplug "rupa/z", use:z.sh
+  zplug "changyuheng/fz"
 #}}}
 
-# Fpath {{{
+# Paths {{{
   fpath=(
     $HOME/.ellipsis/comp
     /usr/local/share/zsh-completions
     $fpath
-)
+  )
   autoload -U compinit; compinit
-# }}}
 
-# Path {{{
-# Load path_helper for OSX
-if [ -x /usr/libexec/path_helper ]; then
-  eval `/usr/libexec/path_helper -s`
-fi
+  # Load path_helper for OSX
+  if [ -x /usr/libexec/path_helper ]; then
+    eval `/usr/libexec/path_helper -s`
+  fi
 
-path=(
-  ~/.local/bin
-  ~/.cargo/bin
-  ~/.ellipsis/bin
-  $(brew --prefix &> /dev/null && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
-  $path
-)
+  path=(
+    ~/.local/bin
+    ~/.cargo/bin
+    ~/.ellipsis/bin
+    /usr/local/sbin
+    /usr/local/bin
+    $(brew --prefix &> /dev/null && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
+    $path
+  )
 #}}}
+
 [[ -s "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+[[ -f "~/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 # Settings {{{
   #set history to largest possible
@@ -51,19 +65,32 @@ path=(
   unsetopt correct_all
 #}}}
 
+# Borg {{{
+  export BORG_RSH="ssh -x -i ~/.config/borg/borg_id_ed25519"
+#}}}
+
 # GPG {{{
   export GPG_TTY=$(tty)
 #}}}
 
 # FASD {{{
-  eval "$(fasd --init auto)"
-  alias j='fasd_cd -i'
+  # eval "$(fasd --init auto)"
+  # alias j='fasd_cd -i'
 #}}}
 
-# Prompt {{{
-  # Make branch italic
+# Zim {{{
   export PURE_PROMPT_SYMBOL=λ
-  zstyle ':vcs_info:git*' formats " `tput sitm`%b`tput ritm`" "x%R"
+
+  _zim_hook_load() {
+    zstyle ':vcs_info:git*' formats " `tput sitm`%b`tput ritm`" "x%R"
+    source ~/.zim/templates/zlogin
+    # setopt EXTENDED_GLOB
+    # for template_file ( ${ZDOTDIR:-${HOME}}/.zim/templates/* ); do
+    #   user_file="${ZDOTDIR:-${HOME}}/.${template_file:t}"
+    #   touch ${user_file}
+    #   ( print -rn "$(<${template_file})$(<${user_file})" >! ${user_file} ) 2>/dev/null
+    # done
+  }
 #}}}
 
 # Aliases {{{
@@ -110,10 +137,9 @@ alias vim='nvim'
 #}}}
 
 
-
 # fzf {{{
   # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-  # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
   # bind -x '"\C-p": vim $(fzf);'
 #}}}
 #
@@ -127,10 +153,18 @@ alias vim='nvim'
   fi
 #}}}
 
-
 # rbenv {{{
   export rvm_path=~/.local/share/rvm
   export PATH="$PATH:$HOME/.rvm/bin"
   if (( $+commands[rvm] )) ; then
   fi
 #}}}
+
+# zplug load {{{
+  if ! zplug check --verbose; then
+    echo; zplug install
+  fi
+  zplug load --verbose
+#}}}
+
+
