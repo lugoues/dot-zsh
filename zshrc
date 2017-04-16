@@ -1,6 +1,10 @@
 #
 # User configuration sourced by interactive shells
 #
+# hack because people keep calling compinit when they shouldnt!
+compinit() {
+
+}
 
 # zplug {{{
   export ZPLUG_HOME=$HOME/.zplug
@@ -14,24 +18,22 @@
   zplug "zimframework/zim", \
     as:plugin, \
     use:"init.zsh", \
-    hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim", \
-    hook-load:"_zim_hook_load"
+    hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim"
   zplug "rupa/z", use:z.sh
   zplug "changyuheng/fz"
+  zplug "mafredri/zsh-async"
+  zplug "sindresorhus/pure", use:"pure.zsh", as:theme, hook-load:"_pure_loader"
+  zplug "zsh-users/zsh-history-substring-search", defer:3
+  zplug "zsh-users/zsh-autosuggestions"
 #}}}
 
 # Paths {{{
   fpath=(
     $HOME/.ellipsis/comp
-    /usr/local/share/zsh-completions
+    $(brew --prefix)/share/zsh/site-functions
     $fpath
   )
-  autoload -U compinit; compinit
-
-  # Load path_helper for OSX
-  if [ -x /usr/libexec/path_helper ]; then
-    eval `/usr/libexec/path_helper -s`
-  fi
+  # autoload -U compinit; compinit
 
   path=(
     ~/.local/bin
@@ -40,6 +42,7 @@
     /usr/local/sbin
     /usr/local/bin
     $(brew --prefix &> /dev/null && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
+    $([ -x /usr/libexec/path_helper ] && eval `/usr/libexec/path_helper -s | sed s/PATH/NPATH/g`; echo $NPATH);
     $path
   )
 #}}}
@@ -78,18 +81,11 @@
   # alias j='fasd_cd -i'
 #}}}
 
-# Zim {{{
+# Theme {{{
   export PURE_PROMPT_SYMBOL=λ
 
-  _zim_hook_load() {
+  _pure_loader() {
     zstyle ':vcs_info:git*' formats " `tput sitm`%b`tput ritm`" "x%R"
-    source ~/.zim/templates/zlogin
-    # setopt EXTENDED_GLOB
-    # for template_file ( ${ZDOTDIR:-${HOME}}/.zim/templates/* ); do
-    #   user_file="${ZDOTDIR:-${HOME}}/.${template_file:t}"
-    #   touch ${user_file}
-    #   ( print -rn "$(<${template_file})$(<${user_file})" >! ${user_file} ) 2>/dev/null
-    # done
   }
 #}}}
 
@@ -164,7 +160,20 @@ alias vim='nvim'
   if ! zplug check --verbose; then
     echo; zplug install
   fi
-  zplug load --verbose
+  zplug load #--verbose
 #}}}
 
+  fpath=(
+    $HOME/.ellipsis/comp
+    $(brew --prefix)/share/zsh/site-functions
+    $fpath
+  )
 
+
+  unfunction compinit
+  autoload -Uz compinit
+  if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+    compinit;
+  else
+    compinit -C;
+  fi;

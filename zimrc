@@ -25,7 +25,7 @@ zmodules=(
   spectrum
   syntax-highlighting
   history-substring-search
-  prompt
+  # prompt
   completion
 )
 
@@ -39,8 +39,8 @@ zmodules=(
 #
 
 # Set your desired prompt here
-zprompt_theme='pure'
-PURE_PROMPT_SYMBOL=λ
+# zprompt_theme='pure'
+# PURE_PROMPT_SYMBOL=λ
 
 #
 # Completion
