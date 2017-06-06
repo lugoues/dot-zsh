@@ -6,6 +6,11 @@ compinit() {
 
 }
 
+# SET ZSH Cache directory
+ZSH_CACHE_DIR=$HOME/.zcache
+[[ ! -d $ZSH_CACHE_DIR ]] && mkdir -p $ZSH_CACHE_DIR
+
+
 # zplug {{{
   export ZPLUG_HOME=$HOME/.zplug
   if [[ ! -f $ZPLUG_HOME/init.zsh ]]; then
@@ -15,16 +20,31 @@ compinit() {
   source ~/.zplug/init.zsh
 
   zplug "zplug/zplug", hook-build:"zplug --self-manage"
+  # zplug "b4b4r07/enhancd", use:init.sh
   zplug "zimframework/zim", \
     as:plugin, \
     use:"init.zsh", \
     hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim"
-  zplug "rupa/z", use:z.sh
-  zplug "changyuheng/fz"
+  # zplug "changyuheng/fz"
+  # zplug "rupa/z", use:z.sh
   zplug "mafredri/zsh-async"
   zplug "sindresorhus/pure", use:"pure.zsh", as:theme, hook-load:"_pure_loader"
   zplug "zsh-users/zsh-history-substring-search", defer:3
-  zplug "zsh-users/zsh-autosuggestions"
+  # zplug "zsh-users/zsh-autosuggestions"
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+  zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
+  zplug "junegunn/fzf", as:plugin,  use:"shell/*.zsh", defer:3
+  zplug "nicodebo/base16-fzf", use:"build_scheme/base16-tomorrow-night.config"
+  zplug "jhawthorn/fzy", as:command, hook-build:"make"
+
+  zplug "supercrabtree/k"
+  zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+
+  zplug "chriskempson/base16-shell", use:"scripts/base16-tomorrow-night.sh", defer:0, if:"[[ $+ITERM_PROFILE ]]"
+
+  zplug "paulirish/git-open", as:plugin
+
 #}}}
 
 # Paths {{{
@@ -39,6 +59,7 @@ compinit() {
     ~/.local/bin
     ~/.cargo/bin
     ~/.ellipsis/bin
+    ~/.zplug/bin
     /usr/local/sbin
     /usr/local/bin
     $(brew --prefix &> /dev/null && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
@@ -48,7 +69,7 @@ compinit() {
 #}}}
 
 [[ -s "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-[[ -f "~/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 # Settings {{{
   #set history to largest possible
@@ -57,16 +78,18 @@ compinit() {
   setopt extendedhistory
   setopt hist_save_no_dups
   setopt hist_ignore_all_dups
-	setopt completeinword   # save each command's beginning timestamp and the duration to the history file
-	setopt hash_list_all  # save each command's beginning timestamp and the duration to the history file
+  setopt completeinword   # save each command's beginning timestamp and the duration to the history file
+  setopt hash_list_all  # save each command's beginning timestamp and the duration to the history file
 
   export CONCURRENCY_LEVEL=5
-  export EDITOR=vim
+  export EDITOR=nvim
   export CHEATCOLORS=true
 
   #disable auto correct
   unsetopt correct_all
 #}}}
+
+bindkey '^R' history-incremental-search-backward
 
 # Borg {{{
   export BORG_RSH="ssh -x -i ~/.config/borg/borg_id_ed25519"
@@ -76,9 +99,31 @@ compinit() {
   export GPG_TTY=$(tty)
 #}}}
 
-# FASD {{{
-  # eval "$(fasd --init auto)"
-  # alias j='fasd_cd -i'
+# fzf {{{
+  # bind -x '"\C-p": vim $(fzf);'
+  if [ $+commands[fzf] ]; then
+    if [ $+command[rg] ]; then
+      export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*" 2> /dev/null'
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    fi
+    [[ $+command[bfs] ]] && \
+      export FZF_ALT_C_COMMAND="bfs -type d -nohidden"
+
+    export FZF_TMUX=true
+    # funcs
+    z() {
+      local dir
+      dir="$(fasd -Rdl "$1" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+    }
+    v() {
+      local file
+      file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && $EDITOR "${file}" || return 1
+    }
+
+    # aliases
+    alias j=z
+    alias jj=zz
+  fi
 #}}}
 
 # Theme {{{
@@ -96,7 +141,8 @@ compinit() {
 # }}}
 
 #marker
-[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
+[[ -s "$HOME/.local/share/marker/marker.sh" ]] \
+  && source "$HOME/.local/share/marker/marker.sh"
 
 # Custom Term
 alias ssh='TERM=xterm-256color ssh'
@@ -132,14 +178,6 @@ alias vim='nvim'
   }
 #}}}
 
-
-# fzf {{{
-  # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-  # bind -x '"\C-p": vim $(fzf);'
-#}}}
-#
-
 # pyenv {{{
   export PYENV_ROOT=~/.local/share/pyenv
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -163,6 +201,7 @@ alias vim='nvim'
   zplug load #--verbose
 #}}}
 
+# Set function paths
   fpath=(
     $HOME/.ellipsis/comp
     $(brew --prefix)/share/zsh/site-functions
@@ -177,3 +216,8 @@ alias vim='nvim'
   else
     compinit -C;
   fi;
+  # if [[ -n $${ZSH_CACHE_DIR}/zcompcache(#qN.mh+24) ]]; then
+  #   compinit -d ${ZSH_CACHE_DIR}/zcompcache
+  # else
+  #   compinit -C -d ${ZSH_CACHE_DIR}/zcompcache
+  # fi;
