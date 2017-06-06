@@ -26,6 +26,5 @@ pkg.pull() {
   git.pull
 
   echo "$(tput setaf 2)Updating zplug.$(tput sgr0)"
-  zsh -c 'source $HOME/.zshrc && zplug update && zplug clean && zplug clear'
-
+  zsh -c 'source $HOME/.zshrc && zplug update && zplug clean && zplug clear' 2> /dev/null
 }
