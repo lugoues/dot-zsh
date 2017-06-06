@@ -39,7 +39,7 @@ ZSH_CACHE_DIR=$HOME/.zcache
   zplug "jhawthorn/fzy", as:command, hook-build:"make"
 
   zplug "supercrabtree/k"
-  zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+  # zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
   zplug "chriskempson/base16-shell", use:"scripts/base16-tomorrow-night.sh", defer:0, if:"[[ $+ITERM_PROFILE ]]"
 
@@ -50,7 +50,7 @@ ZSH_CACHE_DIR=$HOME/.zcache
 # Paths {{{
   fpath=(
     $HOME/.ellipsis/comp
-    $(brew --prefix)/share/zsh/site-functions
+    $( (( $+command[brew] )) && echo $(brew --prefix)/share/zsh/site-functions)
     $fpath
   )
   # autoload -U compinit; compinit
@@ -62,7 +62,7 @@ ZSH_CACHE_DIR=$HOME/.zcache
     ~/.zplug/bin
     /usr/local/sbin
     /usr/local/bin
-    $(brew --prefix &> /dev/null && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
+    $( (( $+command[brew] )) && echo $(brew --prefix)/opt/coreutils/libexec/gnubin)
     $([ -x /usr/libexec/path_helper ] && eval `/usr/libexec/path_helper -s | sed s/PATH/NPATH/g`; echo $NPATH);
     $path
   )
@@ -204,10 +204,9 @@ alias vim='nvim'
 # Set function paths
   fpath=(
     $HOME/.ellipsis/comp
-    $(brew --prefix)/share/zsh/site-functions
+    $( (( $+commands[brew] )) && "$(brew --prefix)/share/zsh/site-functions" )
     $fpath
   )
-
 
   unfunction compinit
   autoload -Uz compinit
