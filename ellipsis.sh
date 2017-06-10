@@ -2,7 +2,7 @@
 #
 # lugoues/zsh ellipsis package
 
-requires=(zsh git fzf)
+requires=(zsh git )
 
 _check_requires() {
   for i in "${requires[@]}"
