@@ -204,14 +204,15 @@ alias vim='nvim'
 # Set function paths
   fpath=(
     $HOME/.ellipsis/comp
-    $( (( $+commands[brew] )) && "$(brew --prefix)/share/zsh/site-functions" )
+    $(brew --prefix)/share/zsh/site-functions
+    $( (( $+commands[brew] )) && echo "$(brew --prefix)/share/zsh/site-functions")
     $fpath
   )
 
   unfunction compinit
   autoload -Uz compinit
   if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-    compinit;
+    compinit -u ;
   else
     compinit -C;
   fi;

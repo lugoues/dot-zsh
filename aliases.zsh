@@ -42,11 +42,11 @@ beet(){
 
 # ls {{{
   # GNU
-  if [[ -s ${HOME}/.dir_colors ]]; then
-    eval "$(dircolors --sh ${HOME}/.dir_colors)"
-  else
-    eval "$(dircolors --sh)"
-  fi
+  # if [[ -s ${HOME}/.dir_colors ]]; then
+    # eval "$(dircolors --sh ${HOME}/.dir_colors)"
+  # else
+    # eval "$(dircolors --sh)"
+  # fi
 
   alias ls='ls --group-directories-first --color=auto'
   alias l='ls -lAh'         # all files, human-readable sizes
