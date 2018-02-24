@@ -6,9 +6,8 @@ man () {
 
 #clear and flush scrollback on putty
 alias clear="clear && printf '\033[3J'"
-
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
-
+#
 ### DOcker Func
 beet(){
   sudo docker run --rm -it \
@@ -31,12 +30,18 @@ beet(){
 #}}}
 
 # Docker {{{
+  if [[ `uname` == 'Linux' ]]
+  then
+    docker_prefix=sudo
+  fi
+
   if type "docker" > /dev/null; then
-    alias dlog="sudo docker logs -f"
-    alias dps="sudo docker ps"
-    alias dstart="sudo docker start "
-    alias dstop="sudo docker stop -t 6000"
-    dbash() { sudo docker exec -it $1 bash; }
+    alias dlog="$prefix docker logs -f"
+    alias dps="$prefix docker ps"
+    alias dstart="$prefix docker start "
+    alias dstop="$prefix docker stop -t 6000"
+    alias drun="$prefix docker run --rm -it"
+    dbash() { $prefix docker exec -it $1 bash; }
   fi
 #}}}
 
@@ -59,6 +64,10 @@ beet(){
   alias lc='lt -c'          # human-readable sizes, most recent last, change time
 #}}}
 
+# exa {{
+alias xtree='exa -lhT --git'
+#}}}
+
 # Git {{{
   if (( ${+commands[hub]} )); then
     eval "$(hub alias -s)"
@@ -68,6 +77,7 @@ beet(){
 
 # Misc {{{
   alias du='du -kh'
+  alias sudoedit='sudo -e'
 
   mkcd() {
     [[ -n ${1} ]] && mkdir -p ${1} && builtin cd ${1}
@@ -84,4 +94,37 @@ beet(){
   if (( ${+commands[dfc]} )); then
     alias df="dfc -Wwd -t btrfs -p '-*docker*' 2> /dev/null"
   fi
+
+  hr() {
+    autoload -U colors # black, red, green, yellow, blue, magenta, cyan, and white
+    colors
+    fg_color=${1:-blue}
+    printf "$fg[${1:-blue}]%0.s─$fg[default]" $(seq 1 $(tput cols))
+  }
 #}}}
+
+
+# Jira {{{
+  if (( ${+commands[jira]} )); then
+    jwla() {
+      jira worklog add --noedit -T "$2" -m "${3:=.}" $1
+    }
+    jwlay() {
+      jira worklog add --noedit -T "$2" -m "${3:=.}" -S "$(/bin/date -v-1d +%m/%d/%y)"  $1
+    }
+  fi
+#}}}
+
+# fkill - kill process
+  if (( ${+commands[fzf]} )); then
+    fkill() {
+      local pid
+      pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+      if [ "x$pid" != "x" ]
+      then
+        echo $pid | xargs kill -${1:-9}
+      fi
+    }
+fi
+
