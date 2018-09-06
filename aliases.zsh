@@ -74,9 +74,28 @@ alias xtree='exa -lhT --git'
   fi
 #}}}
 
+# ncdu
+  if [ $+commands[ncdu] ]; then
+    alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+  fi
+
+# dfc
+  if [ $+commands[dfc] ]; then
+    if [[ ${OSTYPE} == linux* ]]; then
+      alias df="dfc -Wwd -t btrfs -p '-*docker*' 2> /dev/null"
+    fi
+
+    if [[ ${OSTYPE} == darwin* ]]; then
+      alias df="dfc -Wwd 2> /dev/null"
+    fi
+  fi
+
+# prettyping
+  if [ $+commands[prettyping] ]; then
+    alias ping="prettyping --nolegend"
+  fi
 
 # Misc {{{
-  alias du='du -kh'
   alias sudoedit='sudo -e'
 
   mkcd() {
@@ -89,10 +108,6 @@ alias xtree='exa -lhT --git'
 
   if (( ${+commands[dpkg]} )); then
     alias kclean="sudo apt-get remove $(dpkg -l|egrep '^ii  linux-(im|he)'|awk '{print $2}'|grep -v `uname -r`)"
-  fi
-
-  if (( ${+commands[dfc]} )); then
-    alias df="dfc -Wwd -t btrfs -p '-*docker*' 2> /dev/null"
   fi
 
   hr() {
@@ -110,7 +125,7 @@ alias xtree='exa -lhT --git'
       jira worklog add --noedit -T "$2" -m "${3:=.}" $1
     }
     jwlay() {
-      jira worklog add --noedit -T "$2" -m "${3:=.}" -S "$(/bin/date -v-1d +%m/%d/%y)"  $1
+      jira worklog add --noedit -T "$2" -m "${3:=.}" -S "$(date +%Y-%m-%dT%T.00%z --date='yesterday')" $1
     }
   fi
 #}}}

@@ -20,12 +20,10 @@ ZSH_CACHE_DIR=$HOME/.zcache
   source ~/.zplug/init.zsh
 
   zplug "zplug/zplug", hook-build:"zplug --self-manage"
-  zplug "zimframework/zim", \
+  zplug "zimfw/zimfw", \
     as:plugin, \
     use:"init.zsh", \
-    hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim"
-  # zplug "changyuheng/fz"
-  # zplug "rupa/z", use:z.sh
+    hook-build:"ln -sf $ZPLUG_ROOT ~/.zim"
   zplug "whjvenyl/fasd", as:command
   zplug "mafredri/zsh-async"
   zplug "sindresorhus/pure", use:"pure.zsh", as:theme, hook-load:"_pure_loader"
@@ -34,17 +32,22 @@ ZSH_CACHE_DIR=$HOME/.zcache
   # zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
   zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
-  # zplug "junegunn/fzf-bin", as:command, from:gh-r, file:fzf, of:"*${(L)$(uname -s)}*amd64*"
   zplug "junegunn/fzf", as:plugin,  use:"shell/*.zsh", defer:3
   zplug "nicodebo/base16-fzf", use:"bash/base16-tomorrow-night.config"
   zplug "jhawthorn/fzy", as:command, hook-build:"make"
+
+  # zplug "changyuheng/fz", defer:1
+  zplug "wookayin/fzf-fasd"
+
 
   zplug "supercrabtree/k"
   zplug "chriskempson/base16-shell", use:"scripts/base16-tomorrow-night.sh", defer:0, if:"[[ $+ITERM_PROFILE ]]"
 
   zplug "tarrasch/zsh-functional", as:plugin
-  zplug "Tarrasch/zsh-bd", as:plugin
+  # zplug "Tarrasch/zsh-bd", as:plugin
   zplug "zdharma/fast-syntax-highlighting", as:plugin
+
+
 
   # zplug "liangguohuan/fzf-marker", as:plugin, use: "fzf-marker.plugin.zsh"
 #}}}
@@ -114,8 +117,10 @@ bindkey '^R' history-incremental-search-backward
   if [ $commands[fasd] ]; then
     eval "$(fasd --init auto)"
 
-    alias j=z
+    alias j="fasd_cd -d"
     unalias sf
+    # unalias z
+    # unalias j
   fi
 #}}}
 
@@ -134,14 +139,19 @@ bindkey '^R' history-incremental-search-backward
     export FZF_TMUX=true
 
     if [ $commands[fasd] ]; then
-      jj() {
-        local dir
-        dir="$(fasd -Rdl "$1" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
-      }
+      # jj() {
+      #   local dir
+      #   dir="$(fasd -Rdl "$1" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+      # }
       v() {
         local file
         file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && $EDITOR "${file}" || return 1
       }
+      # j() {
+      #   [ $# -gt 0 ] && fasd_cd -d "$*" && return
+      #   local dir
+      #   dir="$(fasd -Rdl "$1" | fzf  --bind 'shift-tab:up,tab:down' -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+      # }
     fi
 
     if [ $+command[rg] ]; then
@@ -153,7 +163,7 @@ bindkey '^R' history-incremental-search-backward
         # rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
         # files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
         rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --color "always"'
-        files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
+        files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}' 2> /dev/null`
         [[ -n "$files" ]] && ${EDITOR:-vim} $files
       }
     fi
@@ -207,10 +217,6 @@ bindkey '^R' history-incremental-search-backward
   }
 #}}}
 
-# Aliases {{{
-  if [[ -s ${ZDOTDIR:-${HOME}}/.aliases.zsh ]]; then
-    source ${ZDOTDIR:-${HOME}}/.aliases.zsh
-  fi
 # }}}
 
 #marker
@@ -273,6 +279,12 @@ alias vim='nvim'
   fi
   zplug load #--verbose
 #}}}
+
+
+# Aliases {{{
+  if [[ -s ${ZDOTDIR:-${HOME}}/.aliases.zsh ]]; then
+    source ${ZDOTDIR:-${HOME}}/.aliases.zsh
+  fi
 
 # Set function paths
   fpath=(
