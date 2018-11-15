@@ -76,7 +76,8 @@ ZSH_CACHE_DIR=$HOME/.zcache
     $path
   )
 
-export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+[[ -s "/usr/libexec/java_home" ]] && export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+
 export GROOVY_HOME=/usr/local/opt/groovy/libexec
 #}}}
 
@@ -289,7 +290,6 @@ alias vim='nvim'
 # Set function paths
   fpath=(
     $HOME/.ellipsis/comp
-    $(brew --prefix)/share/zsh/site-functions
     $( (( $+commands[brew] )) && echo "$(brew --prefix)/share/zsh/site-functions")
     $fpath
   )
