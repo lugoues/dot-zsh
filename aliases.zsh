@@ -86,7 +86,7 @@ alias xtree='exa -lhT --git'
     fi
 
     if [[ ${OSTYPE} == darwin* ]]; then
-      alias df="dfc -Wwd 2> /dev/null"
+      alias df="dfc -Wwdl 2> /dev/null"
     fi
   fi
 
