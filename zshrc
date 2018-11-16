@@ -12,10 +12,10 @@ ZSH_CACHE_DIR=$HOME/.zcache
 
 
 # zplug {{{
-  export ZPLUG_HOME=$HOME/.zplug
-  if [[ ! -f $ZPLUG_HOME/init.zsh ]]; then
-    git clone https://github.com/zplug/zplug $ZPLUG_HOME
-  fi
+  # export ZPLUG_HOME=$HOME/.zplug
+  # if [[ ! -f $ZPLUG_HOME/init.zsh ]]; then
+    # git clone https://github.com/zplug/zplug $ZPLUG_HOME
+  # fi
 
   source ~/.zplug/init.zsh
 
@@ -44,8 +44,6 @@ ZSH_CACHE_DIR=$HOME/.zcache
   zplug "tarrasch/zsh-functional", as:plugin
   # zplug "Tarrasch/zsh-bd", as:plugin
   zplug "zdharma/fast-syntax-highlighting", as:plugin
-
-
 
   # zplug "liangguohuan/fzf-marker", as:plugin, use: "fzf-marker.plugin.zsh"
 #}}}
