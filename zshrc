@@ -32,7 +32,7 @@ ZSH_CACHE_DIR=$HOME/.zcache
   zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/fzf"
   zplug "junegunn/fzf", as:plugin,  use:"shell/*.zsh", defer:3
   zplug "nicodebo/base16-fzf", use:"bash/base16-tomorrow-night.config"
-  zplug "jhawthorn/fzy", as:command, hook-build:"make"
+  # zplug "jhawthorn/fzy", as:command, hook-build:"make"
 
   # zplug "changyuheng/fz", defer:1
   zplug "wookayin/fzf-fasd"
