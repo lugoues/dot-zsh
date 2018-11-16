@@ -20,10 +20,8 @@ ZSH_CACHE_DIR=$HOME/.zcache
   source ~/.zplug/init.zsh
 
   zplug "zplug/zplug", hook-build:"zplug --self-manage"
-  zplug "zimfw/zimfw", \
-    as:plugin, \
-    use:"init.zsh", \
-    hook-build:"ln -sf $ZPLUG_ROOT ~/.zim"
+  ZIM_HOME="$ZPLUG_REPOS/zimfw/zimfw"
+  zplug "zimfw/zimfw", depth:1
   zplug "whjvenyl/fasd", as:command
   zplug "mafredri/zsh-async"
   zplug "sindresorhus/pure", use:"pure.zsh", as:theme, hook-load:"_pure_loader"
@@ -31,7 +29,7 @@ ZSH_CACHE_DIR=$HOME/.zcache
   # zplug "zsh-users/zsh-autosuggestions"
   # zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-  zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
+  zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/fzf"
   zplug "junegunn/fzf", as:plugin,  use:"shell/*.zsh", defer:3
   zplug "nicodebo/base16-fzf", use:"bash/base16-tomorrow-night.config"
   zplug "jhawthorn/fzy", as:command, hook-build:"make"
@@ -51,6 +49,28 @@ ZSH_CACHE_DIR=$HOME/.zcache
 
   # zplug "liangguohuan/fzf-marker", as:plugin, use: "fzf-marker.plugin.zsh"
 #}}}
+
+
+# Zim {{{
+zmodules=(
+  directory
+  environment
+  git
+  history
+  input
+  utility
+  meta
+  custom
+  ssh
+  archive
+  spectrum
+  syntax-highlighting
+  history-substring-search
+  # prompt
+  completion
+  )
+#}}}
+
 
 # Paths {{{
   fpath=(
@@ -99,6 +119,7 @@ export GROOVY_HOME=/usr/local/opt/groovy/libexec
   export CHEATCOLORS=true
   # export XDG_CONFIG_HOME=~/.config
   export HISTORY_IGNORE="(bg|fg|cd*|rm*|clear|ls|pwd|history|exit|make*|* --help|ll|la|jrnl *)"
+  export HISTFILE=~/.zhistory
 
   #disable auto correct
   unsetopt correct_all
