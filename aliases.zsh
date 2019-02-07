@@ -96,7 +96,9 @@ if (( $+commands[prettyping] )); then
 fi
 
 # Misc {{{
+if (( ! ${+commands[sudoedit]} )); then
   alias sudoedit='sudo -e'
+fi
 
   mkcd() {
     [[ -n ${1} ]] && mkdir -p ${1} && builtin cd ${1}
