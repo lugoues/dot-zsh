@@ -26,7 +26,7 @@ _uninstall_zplug() {
 }
 
 pkg.install() {
-  _check_requires
+  _check_requires || exit $?
   _install_zplug
 }
 

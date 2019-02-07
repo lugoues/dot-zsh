@@ -83,6 +83,7 @@ zmodules=(
     ~/.cargo/bin
     ~/.ellipsis/bin
     ~/.zplug/bin
+    ~/.local/share/pyenv/bin
     /usr/local/opt/curl/bin
     /usr/local/opt/openssl/bin
     /usr/local/sbin
@@ -104,13 +105,14 @@ export GROOVY_HOME=/usr/local/opt/groovy/libexec
 
 # Settings {{{
   #set history to largest possible
-  HISTSIZE=9999
-  SAVEHIST=9999
+  HISTSIZE=99999
+  SAVEHIST=99999
   setopt extendedhistory
   setopt hist_save_no_dups
   setopt hist_ignore_all_dups
   setopt completeinword   # save each commands beginning timestamp and the duration to the history file
   setopt hash_list_all  # save each commands beginning timestamp and the duration to the history file
+  setopt inc_append_history     # add commands to HISTFILE in order of execution
 
   export CONCURRENCY_LEVEL=5
   export EDITOR=nvim

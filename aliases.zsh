@@ -143,3 +143,5 @@ alias xtree='exa -lhT --git'
     }
 fi
 
+# psgrep -
+alias psgrep="ps -ef | grep"
