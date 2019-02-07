@@ -69,31 +69,31 @@ alias xtree='exa -lhT --git'
 #}}}
 
 # Git {{{
-  if (( ${+commands[hub]} )); then
-    eval "$(hub alias -s)"
-  fi
+if (( ${+commands[hub]} )); then
+  eval "$(hub alias -s)"
+fi
 #}}}
 
 # ncdu
-  if [ $+commands[ncdu] ]; then
+if (( $+commands[ncdu] )); then
     alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
   fi
 
 # dfc
-  if [ $+commands[dfc] ]; then
-    if [[ ${OSTYPE} == linux* ]]; then
-      alias df="dfc -Wwd -t btrfs -p '-*docker*' 2> /dev/null"
-    fi
-
-    if [[ ${OSTYPE} == darwin* ]]; then
-      alias df="dfc -Wwdl 2> /dev/null"
-    fi
+if (( $+commands[dfc] )); then
+  if [[ ${OSTYPE} == linux* ]]; then
+    alias df="dfc -Wwd -t btrfs -p '-*docker*' 2> /dev/null"
   fi
+
+  if [[ ${OSTYPE} == darwin* ]]; then
+    alias df="dfc -Wwdl 2> /dev/null"
+  fi
+fi
 
 # prettyping
-  if [ $+commands[prettyping] ]; then
-    alias ping="prettyping --nolegend"
-  fi
+if (( $+commands[prettyping] )); then
+  alias ping="prettyping --nolegend"
+fi
 
 # Misc {{{
   alias sudoedit='sudo -e'
@@ -120,27 +120,27 @@ alias xtree='exa -lhT --git'
 
 
 # Jira {{{
-  if (( ${+commands[jira]} )); then
-    jwla() {
-      jira worklog add --noedit -T "$2" -m "${3:=.}" $1
-    }
-    jwlay() {
-      jira worklog add --noedit -T "$2" -m "${3:=.}" -S "$(date +%Y-%m-%dT%T.00%z --date='yesterday')" $1
-    }
-  fi
+if (( ${+commands[jira]} )); then
+  jwla() {
+    jira worklog add --noedit -T "$2" -m "${3:=.}" $1
+  }
+  jwlay() {
+    jira worklog add --noedit -T "$2" -m "${3:=.}" -S "$(date +%Y-%m-%dT%T.00%z --date='yesterday')" $1
+  }
+fi
 #}}}
 
 # fkill - kill process
-  if (( ${+commands[fzf]} )); then
-    fkill() {
-      local pid
-      pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+if (( $+commands[fzf] )); then
+  fkill() {
+    local pid
+    pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
 
-      if [ "x$pid" != "x" ]
-      then
-        echo $pid | xargs kill -${1:-9}
-      fi
-    }
+    if [ "x$pid" != "x" ]
+    then
+      echo $pid | xargs kill -${1:-9}
+    fi
+  }
 fi
 
 # psgrep -
