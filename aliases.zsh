@@ -147,3 +147,20 @@ fi
 
 # psgrep -
 alias psgrep="ps -ef | grep"
+
+# History
+alias history-stat="fc -ln 0 | awk '{print \$1}' | sort | uniq -c | sort -nr | head"
+
+# Colors
+  (( ! ${+GREP_COLOR} )) && export GREP_COLOR='37;45'               #BSD
+  (( ! ${+GREP_COLORS} )) && export GREP_COLORS="mt=${GREP_COLOR}"  #GNU
+  if [[ ${OSTYPE} == openbsd* ]]; then
+    (( ${+commands[ggrep]} )) && alias grep='ggrep --color=auto'
+  else
+   alias grep='grep --color=auto'
+  fi
+
+# Safety
+alias chmod='chmod --preserve-root -v'
+alias chown='chown --preserve-root -v'
+
