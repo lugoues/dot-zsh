@@ -430,7 +430,11 @@ alias vim='nvim'
     '[[ -f ${HOME}/.ssh/config && ${key} == hosts ]] && key=my_hosts reply=()'
 #}}}
 
-
+## Dircolors {{{
+if (( $+commands[dircolors] )) ; then
+  eval $(dircolors)
+fi
+#}}}
 
 #
 # Globbing and fds
