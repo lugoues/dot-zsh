@@ -1,33 +1,16 @@
 
-man () {
-  /usr/bin/man $@ || (help $@ 2> /dev/null && help $@ | less)
-}
-
-
-#clear and flush scrollback on putty
-alias clear="clear && printf '\033[3J'"
-alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
-#
-### DOcker Func
-beet(){
-  sudo docker run --rm -it \
-    -e PUID=$(id -u beets) -e PGID=$(getent group beets | cut -d: -f3) \
-    -v /mnt/raid/Bittorrent/Music:/mnt/raid/Bittorrent/Music:ro \
-    -v /mnt/raid/Music:/mnt/raid/Music \
-    -v ~/.config/beets:/config \
-    lugoues/beets "$@"
-}
+# nvim {{{
+if (( ${+commands[nvim]} )); then
+  alias vim=nvim
+fi
+#}}}
 
 # Safety {{{
-  if [[ ${OSTYPE} == linux* ]]; then
-    alias chmod='chmod --preserve-root -v'
-    alias chown='chown --preserve-root -v'
-  fi
-
   if (( ${+commands[safe-rm]} )); then
     alias rm='safe-rm'
   fi
 #}}}
+
 
 # Docker {{{
   if [[ `uname` == 'Linux' ]]
@@ -44,6 +27,7 @@ beet(){
     dbash() { $prefix docker exec -it $1 bash; }
   fi
 #}}}
+
 
 # ls {{{
   # GNU
@@ -66,12 +50,6 @@ beet(){
 
 # exa {{
 alias xtree='exa -lhT --git'
-#}}}
-
-# Git {{{
-if (( ${+commands[hub]} )); then
-  eval "$(hub alias -s)"
-fi
 #}}}
 
 # ncdu
@@ -100,37 +78,6 @@ if (( ! ${+commands[sudoedit]} )); then
   alias sudoedit='sudo -e'
 fi
 
-  mkcd() {
-    [[ -n ${1} ]] && mkdir -p ${1} && builtin cd ${1}
-  }
-
-  lsswap(){
-    for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
-  }
-
-  if (( ${+commands[dpkg]} )); then
-    alias kclean="sudo apt-get remove $(dpkg -l|egrep '^ii  linux-(im|he)'|awk '{print $2}'|grep -v `uname -r`)"
-  fi
-
-  hr() {
-    autoload -U colors # black, red, green, yellow, blue, magenta, cyan, and white
-    colors
-    fg_color=${1:-blue}
-    printf "$fg[${1:-blue}]%0.s─$fg[default]" $(seq 1 $(tput cols))
-  }
-#}}}
-
-
-# Jira {{{
-if (( ${+commands[jira]} )); then
-  jwla() {
-    jira worklog add --noedit -T "$2" -m "${3:=.}" $1
-  }
-  jwlay() {
-    jira worklog add --noedit -T "$2" -m "${3:=.}" -S "$(date +%Y-%m-%dT%T.00%z --date='yesterday')" $1
-  }
-fi
-#}}}
 
 # fkill - kill process
 if (( $+commands[fzf] )); then
@@ -148,19 +95,7 @@ fi
 # psgrep -
 alias psgrep="ps -ef | grep"
 
-# History
-alias history-stat="fc -ln 0 | awk '{print \$1}' | sort | uniq -c | sort -nr | head"
 
-# Colors
-  (( ! ${+GREP_COLOR} )) && export GREP_COLOR='37;45'               #BSD
-  (( ! ${+GREP_COLORS} )) && export GREP_COLORS="mt=${GREP_COLOR}"  #GNU
-  if [[ ${OSTYPE} == openbsd* ]]; then
-    (( ${+commands[ggrep]} )) && alias grep='ggrep --color=auto'
-  else
-   alias grep='grep --color=auto'
-  fi
-
-# Safety
-alias chmod='chmod --preserve-root -v'
-alias chown='chown --preserve-root -v'
-
+if (( ${+commands[dpkg]} )); then
+  alias kclean="sudo apt-get remove $(dpkg -l|egrep '^ii  linux-(im|he)'|awk '{print $2}'|grep -v `uname -r`)"
+fi
