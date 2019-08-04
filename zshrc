@@ -37,7 +37,7 @@ bindkey -e
   zplugin ice silent as"program" from"gh-r"
   zplugin light junegunn/fzf-bin
 
-  zplugin ice lucid wait"1" as"command" pick"bin/fzf-tmux"
+  zplugin ice lucid wait'1' as"command" pick"bin/fzf-tmux"
   zplugin light junegunn/fzf
 
   # Create and bind multiple widgets using fzf
@@ -52,33 +52,32 @@ bindkey -e
     atpull'%atclone' pick"load_fasd.zsh" src"load_fasd.zsh" nocompile'!'
   zplugin light whjvenyl/fasd
 
-  zplugin ice atclone"./libexec/pyenv init - > zpyenv.zsh" \
-              atinit'export PYENV_ROOT="$PWD"' atpull"%atclone" \
-              as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'
+  zplugin ice lucid wait'1' \
+              atinit'eval "$(pyenv init - zsh --no-rehash)"' \
+              as'command' pick'bin/pyenv' src'completions/pyenv.zsh' nocompile'!'
   zplugin light pyenv/pyenv
 
-  zplugin ice atclone"PATH=./bin:$PATH pyenv virtualenv-init - > zpyenv.zsh" \
-              atpull"%atclone" \
-              as'command' pick"bin/*" src"zpyenv.zsh" nocompile'!'
+  zplugin ice lucid wait'1' \
+              as'command' pick"bin/*" nocompile'!'
   zplugin light pyenv/pyenv-virtualenv
 
-  zplugin ice lucid wait'2' as"program" mv"docker* -> docker-compose" if'[[ "$commands[docker]" ]]'
+  zplugin ice lucid wait'1' as"program" mv"docker* -> docker-compose" has'docker'
   zplugin light docker/compose
 
-  zplugin ice lucid wait"2" as"program" pick"bin/git-dsf"
+  zplugin ice lucid wait'1' as"program" pick"bin/git-dsf"
   zplugin light zdharma/zsh-diff-so-fancy
 
-  zplugin ice lucid wait"2" as"program" pick"$ZPFX/bin/git-now" make"prefix=$ZPFX install"
+  zplugin ice lucid wait'1' as"program" pick"$ZPFX/bin/git-now" make"prefix=$ZPFX install"
   zplugin light iwata/git-now
 
-  zplugin ice lucid wait"2" as"program" pick"$ZPFX/bin/git-alias" make"PREFIX=$ZPFX" nocompile
+  zplugin ice lucid wait'1' as"program" pick"$ZPFX/bin/git-alias" make"PREFIX=$ZPFX" nocompile
   zplugin light tj/git-extras
 
-  zplugin ice lucid wait"2" as"program" atclone'perl Makefile.PL PREFIX=$ZPFX' atpull'%atclone' \
+  zplugin ice lucid wait"1" as"program" atclone'perl Makefile.PL PREFIX=$ZPFX' atpull'%atclone' \
             make'install' pick"$ZPFX/bin/git-cal"
   zplugin light k4rthik/git-cal
 
-  zplugin ice lucid wait'2' as'program'  from"gh-r" atclone"mkdir -p ./functions && ./kind completion zsh > ./functions/_kind" atpull'%atclone' mv'kind* -> kind' nocompile
+  zplugin ice lucid wait'1' as'program' from"gh-r" atclone"mkdir -p ./functions && ./kind completion zsh > ./functions/_kind" atpull'%atclone' mv'kind* -> kind' nocompile
   zplugin light kubernetes-sigs/kind
 
   # zplugin ice as"completion" if'[[ "$commands[docker]" ]]' atinit'zpcompinit; zpcdreplay'
@@ -89,19 +88,16 @@ bindkey -e
   zplugin ice lucid wait'1' svn if'[[ ${OSTYPE} = darwin* ]]'
   zplugin snippet OMZ::plugins/brew
 
-  zplugin ice lucid wait'1' svn if'[[ "$commands[pip]" ]]'
+  zplugin ice lucid wait'1' svn has'pip'
   zplugin snippet OMZ::plugins/pip
 
-  zplugin ice lucid wait'1' svn if'[[ "$commands[tmux]" ]]'
+  zplugin ice lucid wait'1' svn has'tmux'
   zplugin snippet OMZ::plugins/tmux
 
-  zplugin ice lucid wait'1' svn if'[[ "$commands[mosh]" ]]'
+  zplugin ice lucid wait'1' svn has'mosh'
   zplugin snippet OMZ::plugins/mosh
 
   #ZIM
-  zplugin ice svn lucid wait'1'
-  zplugin snippet ZIM::modules/ssh
-
   zplugin ice svn lucid wait'1'
   zplugin snippet ZIM::modules/environment
 
@@ -121,17 +117,17 @@ bindkey -e
   zplugin snippet ZIM::modules/completion
 
   # Completions
-  zplugin ice lucid wait"1" as"completion" if'[[ "$commands[docker]" ]]' atinit'zpcompinit; zpcdreplay'
+  zplugin ice lucid wait"1" as"completion" has'docker' atinit'zpcompinit; zpcdreplay'
   zplugin snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
-  zplugin ice lucid wait"1" as"completion" if'[[ "$commands[docker]" ]]' atinit'zpcompinit; zpcdreplay'
+  zplugin ice lucid wait"1" as"completion" has'docker' tinit'zpcompinit; zpcdreplay'
   zplugin snippet https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
 
   # Load Commands
-  zplugin ice lucid wait"0" atinit'local i; for i in commands/*.zsh; do source $i; done'
+  zplugin ice lucid wait"2" atinit'local i; for i in commands/*.zsh; do source $i; done'
   zplugin load ~/.zsh
 
-  zplugin ice lucid wait"0"
+  zplugin ice lucid wait"1"
   zplugin snippet "$HOME/.zsh/aliases.zsh"
 
   zpcompinit
@@ -187,6 +183,10 @@ path=(
 
   #disable auto correct
   unsetopt correct_all
+
+  # Prevent reporting the status of background and suspended jobs before exiting a shell with job control.
+  # NO_CHECK_JOBS is best used only in combination with NO_HUP, else such jobs will be killed automatically.
+  setopt NO_CHECK_JOBS
 #}}}
 
 # FZF Configuration {{{
