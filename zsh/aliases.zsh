@@ -1,4 +1,16 @@
 
+# GPG Clipboard {{{
+  alias pbdecrypt="pbpaste  | gpg -d | pbcopy"
+  alias pbencrypt="pbpaste | gpg -e --armor | pbcopy"
+#}}}
+
+# Term colors {{{
+  alias ssh='TERM=xterm-256color ssh'
+  alias brew='TERM=xterm-256color brew'
+  alias cmus='cmus_tmux -n music cmus'
+  alias tmux='TERM=xterm-256color tmux'
+#}}}
+
 # nvim {{{
 if (( ${+commands[nvim]} )); then
   alias vim=nvim
