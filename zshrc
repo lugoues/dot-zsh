@@ -20,6 +20,12 @@ bindkey -e
   zplugin ice pick"async.zsh" src"pure.zsh"
   zplugin light sindresorhus/pure
 
+  zplugin ice atclone"dircolors -b src/dir_colors > c.zsh" \
+              atpull'%atclone' \
+              pick"c.zsh" \
+              nocompile'!'
+  zplugin load arcticicestudio/nord-dircolors
+
   # zplugin light romkatv/powerlevel10k
 
   # zplugin ice pick".purepower" src".purepower"
