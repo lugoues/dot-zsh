@@ -77,6 +77,12 @@ bindkey -e
             make'install' pick"$ZPFX/bin/git-cal"
   zplugin light k4rthik/git-cal
 
+  zplugin ice lucid wait"1" as"program" \
+              atclone'PIPENV_VENV_IN_PROJECT=1 pipenv run python setup.py install' \
+              atpull'%atclone' \
+              pick".venv/bin/git-revise"
+  zplugin light mystor/git-revise
+
   zplugin ice lucid wait'1' as'program' from"gh-r" atclone"mkdir -p ./functions && ./kind completion zsh > ./functions/_kind" atpull'%atclone' mv'kind* -> kind' nocompile
   zplugin light kubernetes-sigs/kind
 
