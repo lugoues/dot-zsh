@@ -1,5 +1,5 @@
 if [[ $+commands[rg] && $+commands[fzf] ]]; then
-  unalias sf
+  # unalias sf
   function sf {
     if [ "$#" -lt 1 ]; then echo "Supply string to search for!"; return 1; fi
     printf -v search "%q" "$*"

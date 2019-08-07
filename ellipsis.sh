@@ -2,7 +2,7 @@
 #
 # lugoues/zsh ellipsis package
 
-requires=(zsh git gawk svn)
+requires=(zsh git gawk svn pipenv)
 ZPLUGIN_HOME=~/.zplugin
 
 _check_requires() {
