@@ -179,12 +179,15 @@ path=(
   HISTFILE=~/.zhistory
   HISTSIZE=99999
   SAVEHIST=99999
-  setopt extendedhistory
-  setopt hist_save_no_dups
-  setopt hist_ignore_all_dups
+  setopt extended_history # record timestamp of command in HISTFILE
+  # setopt hist_save_no_dups
+  setopt hist_ignore_all_dups # ignore duplicated commands history list
+  setopt hist_expire_dups_first # delete dups first when reaching max history
   setopt completeinword   # save each commands beginning timestamp and the duration to the history file
   setopt hash_list_all  # save each commands beginning timestamp and the duration to the history file
   setopt inc_append_history     # add commands to HISTFILE in order of execution
+  setopt share_history # share data between open sessions
+  setopt hist_ignore_space      # ignore commands that start with space
 #}}}
 
 # Configuration {{{
