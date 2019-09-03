@@ -67,6 +67,9 @@ bindkey -e
               as'command' pick"bin/*" nocompile'!'
   zplugin light pyenv/pyenv-virtualenv
 
+# MichaelAquilina/zsh-autoswitch-virtualenv
+
+
   zplugin ice lucid wait'1' as"program" mv"docker* -> docker-compose" has'docker'
   zplugin light docker/compose
 
@@ -86,7 +89,8 @@ bindkey -e
   zplugin ice lucid wait"1" as"program" \
               atclone'PIPENV_VENV_IN_PROJECT=1 pipenv run python setup.py install' \
               atpull'%atclone' \
-              pick".venv/bin/git-revise"
+              pick".venv/bin/git-revise" \
+              has"pipenv"
   zplugin light mystor/git-revise
 
   zplugin ice lucid wait'1' as'program' from"gh-r" atclone"mkdir -p ./functions && ./kind completion zsh > ./functions/_kind" atpull'%atclone' mv'kind* -> kind' nocompile
@@ -125,15 +129,18 @@ bindkey -e
   zplugin ice svn lucid wait'1'
   zplugin snippet ZIM::modules/utility
 
-  zplugin ice svn
+  zplugin ice svn lucid wait'1' atinit'zpcompinit; zpcdreplay'
   zplugin snippet ZIM::modules/completion
 
   # Completions
-  zplugin ice lucid wait"1" as"completion" has'docker' atinit'zpcompinit; zpcdreplay'
-  zplugin snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+  # zplugin ice lucid wait"1" as"completion" has'docker' atinit'zpcompinit; zpcdreplay'
+  # zplugin snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
-  zplugin ice lucid wait"1" as"completion" has'docker' tinit'zpcompinit; zpcdreplay'
-  zplugin snippet https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
+  # zplugin ice lucid wait"1" as"completion" has'docker' atinit'zpcompinit; zpcdreplay'
+  # zplugin snippet https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
+
+  # zplugin ice lucid wait"1" as"completion" atinit'zpcompinit; zpcdreplay'
+  # zplugin snippet https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
 
   # Load Commands
   zplugin ice lucid wait"2" atinit'local i; for i in commands/*.zsh; do source $i; done'
@@ -152,6 +159,7 @@ bindkey -e
 # Paths {{{
   fpath=(
     $HOME/.ellipsis/comp
+    $zconfig/functions
     $( (( $+command[brew] )) && echo $(brew --prefix)/share/zsh/site-functions)
     $fpath
   )
@@ -168,6 +176,7 @@ path=(
     # $(brew --prefix)/opt/coreutils/libexec/gnubin
     $( (( $+commands[brew] )) && echo "$(brew --prefix)/opt/coreutils/libexec/gnubin")
     $([ -x /usr/libexec/path_helper ] && eval `/usr/libexec/path_helper -s | sed s/PATH/NPATH/g`; echo $NPATH);
+    $( (( $+commands[dotnet] )) && echo "${HOME}/.dotnet/tools");
     /Applications/Visual Studio Code.app/Contents/Resources/app/bin
     $path
   )
@@ -180,7 +189,6 @@ path=(
   HISTSIZE=99999
   SAVEHIST=99999
   setopt extended_history # record timestamp of command in HISTFILE
-  # setopt hist_save_no_dups
   setopt hist_ignore_all_dups # ignore duplicated commands history list
   setopt hist_expire_dups_first # delete dups first when reaching max history
   setopt completeinword   # save each commands beginning timestamp and the duration to the history file
@@ -227,6 +235,11 @@ path=(
   export GPG_TTY=$(tty)
 #}}}
 
+# Fzf Ctl-T aware {{
+# export FZF_COMPLETION_TRIGGER=''
+# bindkey '^T' fzf-completion
+# bindkey '^I' $fzf_default_completion
+#}}
 
 # meta-e to edit command in editor
 autoload edit-command-line && zle -N edit-command-line
