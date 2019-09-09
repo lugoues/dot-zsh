@@ -49,15 +49,15 @@ fi
     # eval "$(dircolors --sh)"
   # fi
 
-  alias ls='ls --group-directories-first --color=auto'
-  alias l='ls -lAh'         # all files, human-readable sizes
-  alias lm="l | ${PAGER}"   # all files, human-readable sizes, use pager
-  alias ll='ls -lh'         # human-readable sizes
-  alias lr='ll -R'          # human-readable sizes, recursive
-  alias lx='ll -XB'         # human-readable sizes, sort by extension (GNU only)
-  alias lk='ll -Sr'         # human-readable sizes, largest last
-  alias lt='ll -tr'         # human-readable sizes, most recent last
-  alias lc='lt -c'          # human-readable sizes, most recent last, change time
+  # alias ls='ls --group-directories-first --color=auto'
+  # alias l='ls -lAh'         # all files, human-readable sizes
+  # alias lm="l | ${PAGER}"   # all files, human-readable sizes, use pager
+  # alias ll='ls -lh'         # human-readable sizes
+  # alias lr='ll -R'          # human-readable sizes, recursive
+  # alias lx='ll -XB'         # human-readable sizes, sort by extension (GNU only)
+  # alias lk='ll -Sr'         # human-readable sizes, largest last
+  # alias lt='ll -tr'         # human-readable sizes, most recent last
+  # alias lc='lt -c'          # human-readable sizes, most recent last, change time
 #}}}
 
 # exa {{
@@ -111,3 +111,14 @@ alias psgrep="ps -ef | grep"
 if (( ${+commands[dpkg]} )); then
   alias kclean="sudo apt-get remove $(dpkg -l|egrep '^ii  linux-(im|he)'|awk '{print $2}'|grep -v `uname -r`)"
 fi
+
+# exa
+if (( ${+commands[exa]} )); then
+  alias ls='exa'
+  alias ll='exa -l --git'
+  alias lll='exa -l | less'
+  alias lla='exa -la'
+  alias lt='exa -T'
+  alias llfu='exa -bghHliS --git'
+fi
+

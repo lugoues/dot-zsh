@@ -40,6 +40,12 @@ bindkey -e
   zplugin ice lucid wait"!0" atload"ZPLGM[COMPINIT_OPTS]=-C; zpcompinit"
   zplugin light zdharma/fast-syntax-highlighting
 
+  zplugin ice lucid wait'1' from"gh-r" as"program" bpick"*x86_64*" mv"bat* -> bat" pick"bat/bat"
+  zplugin light sharkdp/bat
+
+  zplugin ice lucid wait'1' from"gh-r" as"program" mv"exa* -> exa"
+  zplugin light ogham/exa
+
   zplugin ice silent as"program" from"gh-r"
   zplugin light junegunn/fzf-bin
 
@@ -76,8 +82,8 @@ bindkey -e
   zplugin ice lucid wait'1' as"program" pick"bin/git-dsf"
   zplugin light zdharma/zsh-diff-so-fancy
 
-  zplugin ice lucid wait'1' as"program" pick"$ZPFX/bin/git-now" make"prefix=$ZPFX install"
-  zplugin light iwata/git-now
+  # zplugin ice lucid wait'1' as"program" pick"$ZPFX/bin/git-now" make"prefix=$ZPFX install"
+  # zplugin light iwata/git-now
 
   zplugin ice lucid wait'1' as"program" pick"$ZPFX/bin/git-alias" make"PREFIX=$ZPFX" nocompile
   zplugin light tj/git-extras
@@ -220,9 +226,13 @@ path=(
 
   export FZF_TMUX=true
 
-  if [ $+command[rg] ]; then
+  if [ $+commands[rg] ]; then
     export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*" 2> /dev/null'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  fi
+
+  if [ $+commands[bat] ]; then
+    export FZF_CTRL_T_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
   fi
 #}}}
 
