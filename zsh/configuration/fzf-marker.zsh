@@ -1,0 +1,5 @@
+export FZF_MARKER_CONF_DIR=~/.zsh/marker
+export FZF_MARKER_COMMAND_COLOR='\x1b[38;5;255m'
+export FZF_MARKER_COMMENT_COLOR='\x1b[38;5;8m'
+export FZF_MARKER_MAIN_KEY='\C-@'
+export FZF_MARKER_PLACEHOLDER_KEY='\C-v'
