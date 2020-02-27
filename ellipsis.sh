@@ -15,6 +15,10 @@ _check_requires() {
   done
 }
 
+_uninstall_zplugin() {
+  rm -R $HOME/.zinit
+}
+
 pkg.install() {
   _check_requires || exit $?
 }
