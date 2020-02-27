@@ -1,213 +1,257 @@
-# zconfig="${HOME}/.zsh"
 
-# # Emacs mode
-# bindkey -e
-
-# # Load zplug {{{
-#   source "${HOME}/.zplugin/bin/zplugin.zsh"
-#   autoload -Uz _zplugin
-#   (( ${+_comps} )) && _comps[zplugin]=_zplugin
-
-#   # # Add ZIM to snippet shorthand
-#   # ZPLG_1MAP+=("ZIM::" "https://github.com/zimfw/zimfw/trunk/")
-#   # ZPLG_2MAP+=("ZIM::" "https://github.com/zimfw/zimfw/raw/master/")
-# #}}}
-
-# # Install zplugin Plugins {{{
-
-
-
-  # zplugin ice lucid wait"!0" pick"scripts/base16-tomorrow-night.sh" src"scripts/base16-tomorrow-night.sh" if"[[ $+ITERM_PROFILE ]]"
-  # zplugin light chriskempson/base16-shell
-
-  # zplugin ice lucid wait"0" pick"bash/base16-tomorrow-night.config" src"bash/base16-tomorrow-night.config" nocompile'!'
-  # zplugin light nicodebo/base16-fzf
-
-  # zplugin ice lucid wait"!0" atload"ZPLGM[COMPINIT_OPTS]=-C; zpcompinit"
-  # zplugin light zdharma/fast-syntax-highlighting
-
-
-
-
-  # # Create and bind multiple widgets using fzf
-  # zplugin ice lucid wait"0" multisrc"shell/{completion,key-bindings}.zsh" id-as"junegunn/fzf_completions" pick"/dev/null"
-  # zplugin light junegunn/fzf
-
-
-  # Load FASD - pregen the init script whent pulled and source it when loading
-
-
-
-
-# MichaelAquilina/zsh-autoswitch-virtualenv
-
-
-  # zplugin ice lucid wait'1' as"program" mv"docker* -> docker-compose" has'docker'
-  # zplugin light docker/compose
-
-  # zplugin ice lucid wait'1' as"program" pick"bin/git-dsf"
-  # zplugin light zdharma/zsh-diff-so-fancy
-
-  # zplugin ice lucid wait'1' as"program" pick"$ZPFX/bin/git-alias" make"PREFIX=$ZPFX" nocompile
-  # zplugin light tj/git-extras
-
-  # zplugin ice lucid wait"1" as"program" atclone'perl Makefile.PL PREFIX=$ZPFX' atpull'%atclone' \
-  #           make'install' pick"$ZPFX/bin/git-cal"
-  # zplugin light k4rthik/git-cal
-
-
-
-
-
-  zplugin ice silent wait"1" as"program" from"gh-r" mv'k3sup* -> k3sup' nocompile
-  zplugin light alexellis/k3sup
-
-
-# # Generated Completions {{{
-#   zplugin ice has'eksctl' \
-#               id-as'eksctl' \
-#               as"null" \
-#               atclone'eksctl completion zsh >! _eksctl' \
-#               atpull'%atclone' \
-#               wait silent nocompile run-atpull
-#   zplugin light zdharma/null
-
-
-
+## Initialize Zinit
+  if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+      print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
+      command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+      command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+          print -P "%F{33}▓▒░ %F{34}Installation successful.%f" || \
+          print -P "%F{160}▓▒░ The clone has failed.%f"
+  fi
+  source "$HOME/.zinit/bin/zinit.zsh"
+  autoload -Uz _zinit
+  (( ${+_comps} )) && _comps[zinit]=_zinit
 #}}}
-  # zplugin ice as"completion" if'[[ "$commands[docker]" ]]' atinit'zpcompinit; zpcdreplay'
+
+# where do we store zsh config
+ZCONFIG="${HOME}/.zsh"
+
+# Install Plugins {{{
+
+# Look / Feel
+  [[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
+
+  zinit light mafredri/zsh-async
+
+  zinit ice silent wait'1' atload'fast-theme $ZCONFIG/themes/fsh/nord.ini > /dev/null'
+  zinit light zdharma/fast-syntax-highlighting
+
+  zinit ice depth=1
+  zinit light romkatv/powerlevel10k
+
+  zinit ice atclone"dircolors -b src/dir_colors > c.zsh" \
+              atpull'%atclone' \
+              pick"c.zsh" \
+              src'c.zsh' \
+              nocompile'!'
+  zinit light arcticicestudio/nord-dircolors
+
+# Tooling
+  zinit ice lucid as"program" from"gh-r"
+  zinit light sharkdp/fd
+
+  zinit ice lucid from"gh-r" as"program" bpick"*x86_64*" mv"bat* -> bat" pick"bat/bat"
+  zinit light sharkdp/bat
+
+  # zinit ice lucid as"program" pick"bin/git-dsf"
+  # zinit light zdharma/zsh-diff-so-fancy
+
+  zinit ice lucid from"gh-r" as"program" pick"delta*/delta"
+  zinit light dandavison/delta
+
+  zinit ice lucid from"gh-r" as"program" mv"exa* -> exa"
+  zinit light ogham/exa
+
+  zinit ice lucid \
+    wait"1" \
+    as"program" \
+    atclone"fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install > load_fasd.zsh" \
+    atpull'%atclone' \
+    pick"load_fasd.zsh" \
+    src"load_fasd.zsh" \
+    nocompile'!'
+  zinit light whjvenyl/fasd
+
+  zinit ice lucid as"program" from"gh-r"
+  zinit load junegunn/fzf-bin
+
+  zinit ice lucid wait \
+          id-as"junegunn/fzf_completions" \
+          multisrc"shell/{completion,key-bindings}.zsh"
+  zinit light junegunn/fzf
+
+  zinit ice luicd wait
+  zinit light andrewferrier/fzf-z
+
+  zinit ice lucid as"program" pick"$ZPFX/bin/git-alias" make"PREFIX=$ZPFX" nocompile
+  zinit light tj/git-extras
+
+  zinit ice lucid wait as"program" src"init.sh"
+  zinit light b4b4r07/enhancd
+
+  # zplugin ice has'pyenv' \
+  #             id-as'pyenv-competion' \
+  #             as'null' \
+  #             atinit'eval "$(pyenv init - zsh --no-rehash)"' \
+  #             src'completions/pyenv.zsh'
+  #             wait silent nocompile run-atpull
+  # zplugin light zdharma/null
+
+  # zplugin ice lucid wait'1' \
+  #             as'command' pick"bin/*" nocompile'!'
+  # zplugin light zdharma/null
+
+
+
+  # zinit light https://github.com/SidOfc/dotfiles/blob/d07fa3862ed065c2a5a7f1160ae98416bfe2e1ee/zsh/fp
+  # # Todo - do we want this?
+  # zinit ice lucid wait"1" as"program" \
+  #             atclone'PIPENV_VENV_IN_PROJECT=1 pipenv run python setup.py install' \
+  #             atpull'%atclone' \
+  #             pick".venv/bin/git-revise" \
+  #             has"pipenv"
+  # zinit light mystor/git-revise
+
+  # zinit ice lucid wait'1' \
+  #           atinit'eval "$(pyenvFailed to select current timestamp init - zsh --no-rehash)"' \
+  #           as'command' pick'bin/pyenv' src'completions/pyenv.zsh' nocompile'!' \
+  #           has'pyenv' \
+  #           id-as'pyenv'
+  # zinit light zdharma/null
+
+  # zinit ice lucid wait'1' \
+  #             as'command' pick"bin/*" nocompile'!' \
+  #             has'pyenv-virtualenv' \
+  #             id'pyenv-virtualenv'
+  # zinit light zdharma/null
+
+  # zinit ice lucid wait'1' as'program' from"gh-r" atclone"mkdir -p ./functions && ./kind completion zsh > ./functions/_kind" atpull'%atclone' mv'kind* -> kind' nocompile
+  # zinit light kubernetes-sigs/kind
+
+# Completions
+  zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+  zsh-users/zsh-completions
+  # Todo: this fails with 'can only be called from completion function'
+  # zinit ice slient has'exa' as'completion'
+  # zinit snippet https://github.com/ogham/exa/blob/master/contrib/completions.zsh
+
+  # zinit ice slient has'docker' as'completion'
+  # zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+
+  # zinit ice slient has'docker' as'completion'
+  # zinit snippet https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
+
+# Generated Completions
+  zplugin ice has'eksctl' \
+              id-as'eksctl' \
+              as"null" \
+              atclone'eksctl completion zsh >! _eksctl' \
+              atpull'%atclone' \
+              wait silent nocompile run-atpull
+  zplugin light zdharma/null
+
+# Plugins
   #OMZ
-  # zplugin ice lucid wait'1' svn if'[[ ${OSTYPE} = darwin* ]]'
-  # zplugin snippet OMZ::plugins/osx
+  zinit ice lucid wait svn if'[[ ${OSTYPE} = darwin* ]]'
+  zinit snippet OMZ::plugins/osx
 
-  # zplugin ice lucid wait'1' svn if'[[ ${OSTYPE} = darwin* ]]'
-  # zplugin snippet OMZ::plugins/brew
+  zinit ice lucid wait svn if'[[ ${OSTYPE} = darwin* ]]'
+  zinit snippet OMZ::plugins/brew
 
-  # zplugin ice lucid wait'1' svn has'pip'
-  # zplugin snippet OMZ::plugins/pip
+  zinit ice lucid wait svn has'pip'
+  zinit snippet OMZ::plugins/pip
 
-  # zplugin ice lucid wait'1' svn has'tmux'
-  # zplugin snippet OMZ::plugins/tmux
+  zinit ice lucid wait svn has'tmux'
+  zinit snippet OMZ::plugins/tmux
 
-  # zplugin ice lucid wait'1' svn has'mosh'
-  # zplugin snippet OMZ::plugins/mosh
+  zinit ice lucid wait svn has'mosh'
+  zinit snippet OMZ::plugins/mosh
 
-  #ZIM
-  # zplugin ice svn lucid wait'1'
-  # zplugin snippet ZIM::modules/environment
+# Load Configuration
+  zinit ice lucid as'local-configuration' atinit'local i; for i in configuration/*.zsh; do source $i; done'
+  zinit load ~/.zsh
 
-  # zplugin ice svn lucid wait'1'
-  # zplugin snippet ZIM::modules/git
+# Load Commands
+  zinit ice lucid as'local-commands' wait"1" atinit'local i; for i in commands/*.zsh; do source $i; done'
+  zinit load ~/.zsh
 
-  # zplugin ice svn lucid wait'1'
-  # zplugin snippet ZIM::modules/directory
-
-  # zplugin ice svn lucid wait'1'
-  # zplugin snippet ZIM::modules/input
-
-  # zplugin ice svn lucid wait'1'
-  # zplugin snippet ZIM::modules/utility
-
-  # zplugin ice svn lucid wait'1' atinit'zpcompinit; zpcdreplay'
-  # zplugin snippet ZIM::modules/completion
-
-  # Completions
-  # zplugin ice lucid wait"1" as"completion" has'docker' atinit'zpcompinit; zpcdreplay'
-  # zplugin snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-
-
-  # zplugin ice slient wait as"completion" # atinit'zpcompinit; zpcdreplay'
-  # zplugin snippet https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
-
-
-
-
-  # # Load Commands
-  # zplugin ice lucid wait"2" atinit'local i; for i in commands/*.zsh; do source $i; done'
-  # zplugin load ~/.zsh
-
-  # zplugin ice lucid wait"1"
-  # zplugin snippet "$HOME/.zsh/aliases.zsh"
-
-  # Reload any turbo configurations
-  zplugin ice wait lucid atload"zicompinit; zicdreplay" blockf
-
-  zpcompinit
-#}}}
-
-# Theming {{{
-  export PURE_PROMPT_SYMBOL=λ
+# Reload Completions
+  zinit ice silent wait"!1" atload"ZINIT[COMPINIT_OPTS]=-C; zpcompinit" #; zpcdreplay"
 #}}}
 
 # Paths {{{
+  typeset -U fpath # make paths unique
   fpath=(
     $HOME/.ellipsis/comp
-    $zconfig/functions
     $( (( $+command[brew] )) && echo $(brew --prefix)/share/zsh/site-functions)
     $fpath
   )
+  export FPATH
 
-path=(
+  typeset -U path # make paths unique
+  path=(
     ~/.local/bin
     ~/.cargo/bin
     ~/.ellipsis/bin
-    ~/.local/share/pyenv/bin
-    /usr/local/opt/curl/bin
-    /usr/local/opt/openssl/bin
     /usr/local/sbin
     /usr/local/bin
-    # $(brew --prefix)/opt/coreutils/libexec/gnubin
-    $( (( $+commands[brew] )) && echo "$(brew --prefix)/opt/coreutils/libexec/gnubin")
-    $([ -x /usr/libexec/path_helper ] && eval `/usr/libexec/path_helper -s | sed s/PATH/NPATH/g`; echo $NPATH);
+    $( (( $+commands[brew] )) && \
+      brew_prefix=$(brew --prefix) && \
+      echo  ${brew_prefix}/opt/*/libexec/gnubin \
+           "${brew_prefix}/opt/curl/bin" \
+           "${brew_prefix}/opt/openssl/bin")
     $( (( $+commands[dotnet] )) && echo "${HOME}/.dotnet/tools");
-    /Applications/Visual Studio Code.app/Contents/Resources/app/bin
+    "$( [ -d "/Applications/Visual Studio Code.app" ] && echo "/Applications/Visual Studio Code.app/Contents/Resources/app/bin")"
     $path
   )
+  export PATH #export caps path - both matter in zsh
 #}}}
-
-
-# History {{{
-
-#}}}
-
-
-# Lpass Cli  {{{
-  # export LPASS_HOME="${HOME}/.local/etc/lpass"
-# }}}
 
 # Configuration {{{
-  # export CONCURRENCY_LEVEL=5
-  # export EDITOR=nvim
-  # export CHEATCOLORS=true
-  # export XDG_CONFIG_HOME=~/.config
+  export CONCURRENCY_LEVEL=5
+  export EDITOR=nvim
+  export CHEATCOLORS=true
+  export XDG_CONFIG_HOME=~/.config
 
-  #disable auto correct
-  # unsetopt correct_all
+# History
+  HISTORY_IGNORE='(bg|fg|cd*|rm*|clear|l[alsh]#( *)#|pwd|history|exit|make*|* --help|jrnl*|dnote*)' # hide common or private commands from history
+  zshaddhistory() {
+    emulate -L zsh
+    ## uncomment if HISTORY_IGNORE
+    ## should use EXTENDED_GLOB syntax
+    setopt extendedglob
+    [[ $1 != ${~HISTORY_IGNORE} ]]
+  }
+  : ${HISTFILE=${ZDOTDIR:-${HOME}}/.zhistory}
+  HISTSIZE=99999
+  SAVEHIST=99999
+  setopt extended_history # record timestamp of command in HISTFILE
+  setopt hist_ignore_all_dups # ignore duplicated commands history list
+  setopt hist_expire_dups_first # delete dups first when reaching max history
+  setopt completeinword   # save each commands beginning timestamp and the duration to the history file
+  setopt hash_list_all  # save each commands beginning timestamp and the duration to the history file
+  setopt inc_append_history     # add commands to HISTFILE in order of execution
+  setopt share_history # share data between open sessions
+  setopt hist_ignore_space      # ignore commands that start with space
+  setopt hist_verify # Don't execute the command directly upon history expansion.
+  # setopt hist_ignore_dups # Don't enter immediate duplicates into the history.
+  # setopt hist_find_no_dups   # Don't display duplicates when searching the history.
 
-  # Prevent reporting the status of background and suspended jobs before exiting a shell with job control.
-  # NO_CHECK_JOBS is best used only in combination with NO_HUP, else such jobs will be killed automatically.
-  # setopt NO_CHECK_JOBS
+# Terminal
+  setopt auto_cd # Perform cd to a directory if the typed command is invalid, but is a directory.
+  setopt auto_pushd # Make cd push the old directory to the directory stack.
+  setopt pushd_ignore_dups # Don't push multiple copies of the same directory to the stack.
+  setopt pushd_silent # Don't print the directory stack after pushd or popd.
+  setopt pushd_to_home # Have pushd without arguments act like `pushd ${HOME}`.
+  setopt extended_glob # Treat `#`, `~`, and `^` as patterns for filename globbing.
+  unsetopt correct_all # disable auto correct
+
+# Jobs
+  setopt auto_resume # Resume an existing job before creating a new one.
+  setopt long_list_jobs # List jobs in verbose format by default.
+  setopt no_bg_nice # Prevent background jobs being given a lower priority.
+  setopt no_hup # Prevent SIGHUP to jobs on shell exit.
+  setopt no_check_jobs #Prevent reporting the status of background and suspended jobs before exiting a shell with job control.
+
+# Input / Output
+  setopt interactive_comments # Allow comments starting with `#` in the interactive shell.
+  setopt no_clobber # Disallow `>` to overwrite existing files. Use `>|` or `>!` instead.
+
+# GPG
+  (( $+commands[gpg] )) && \
+    export GPG_TTY=$(tty)
 #}}}
 
-# FZF Configuration {{{
-
+# Local Config Settings {{{
+  [[ -f "${HOME}/.zshrc.local" ]] && source ${HOME}/.zshrc.local
 #}}}
 
-# PyEnv {{{
-  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-#}}}
-
-# GPG {{{
-# (( $+commands[gpg] )) && \
-#   export GPG_TTY=$(tty)
-#}}}
-
-# Fzf Ctl-T aware {{
-# export FZF_COMPLETION_TRIGGER=''
-bindkey '^T' fzf-completion
-bindkey '^I' $fzf_default_completion
-#}}
-
-# meta-e to edit command in editor
-autoload edit-command-line && zle -N edit-command-line
-bindkey '\ee' edit-command-line
