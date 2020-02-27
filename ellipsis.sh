@@ -16,7 +16,7 @@ _check_requires() {
 }
 
 _uninstall_zplugin() {
-  rm -R $HOME/.zinit
+  rm -fR $HOME/.zinit
 }
 
 pkg.install() {
