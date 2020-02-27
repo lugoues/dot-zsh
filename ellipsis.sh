@@ -2,7 +2,7 @@
 #
 # lugoues/zsh ellipsis package
 
-requires=(zsh git gawk svn)
+requires=(zsh git gawk svn unzip)
 
 _check_requires() {
   echo "$(tput setaf 2)Checking dependencies...$(tput sgr0)"
