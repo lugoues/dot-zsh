@@ -149,6 +149,11 @@ ZCONFIG="${HOME}/.zsh"
             wait'1' silent nocompile run-atpull
   zinit light zdharma/null
 
+  zinit ice has:'tldr' \
+            as:'completion' \
+            wait:'1' silent
+  zinit snippet https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer
+
 # Completions
   # zinit wait'1' lucid atload"zicompinit; zicdreplay" blockf for \
   # zsh-users/zsh-completions
@@ -230,7 +235,7 @@ ZCONFIG="${HOME}/.zsh"
     setopt extendedglob
     [[ $1 != ${~HISTORY_IGNORE} ]]
   }
-  : ${HISTFILE=${ZDOTDIR:-${HOME}}/.zhistory}
+  HISTFILE=${ZDOTDIR:-${HOME}}/.zhistory
   HISTSIZE=99999
   SAVEHIST=99999
   setopt extended_history # record timestamp of command in HISTFILE
