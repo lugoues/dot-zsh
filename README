@@ -1,0 +1,3 @@
+Install terminfo
+tic -x ./xterm-256color-italic.terminfo
+tic -x ./tmux.terminfo

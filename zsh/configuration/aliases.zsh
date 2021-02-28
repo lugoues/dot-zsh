@@ -64,16 +64,9 @@ fi
   alias pbencrypt="pbpaste | gpg -e --armor | pbcopy"
 #}}}
 
-function hr {
-  autoload -U colors # black, red, green, yellow, blue, magenta, cyan, and white
-  colors
-  fg_color=${1:-blue}
-  printf "$fg[${1:-blue}]%0.s─$fg[default]" $(seq 1 $(tput cols))
-}
-
-if [ $commands[fasd] ]; then
-  alias j="fasd_cd -d"
-fi
+# if [ $commands[fasd] ]; then
+#   alias j="fasd_cd -d"
+# fi
 
 lsswap(){
   for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
@@ -124,3 +117,7 @@ fi
 if [[ ${OSTYPE} == darwin* ]]; then
   function clear { /usr/bin/clear && printf '\e[3J'; }
 fi
+
+# Fix Navi Layout
+alias navi="navi --fzf-overrides '  --height 40%'"
+# alias navi="navi --fzf-overrides ' --no-exact  --height 40%'"

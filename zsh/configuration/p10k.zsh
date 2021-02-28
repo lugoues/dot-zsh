@@ -24,7 +24,7 @@
 
   # Unset all configuration options. This allows you to apply configiguration changes without
   # restarting zsh. Edit ~/.p10k.zsh and type `source ~/.p10k.zsh`.
-  unset -m 'POWERLEVEL9K_*'
+  unset -m 'POWERLEVEL9K_*|DEFAULT_USER'
 
   autoload -Uz is-at-least && is-at-least 5.1 || return
 

@@ -2,7 +2,7 @@
 #
 # lugoues/zsh ellipsis package
 
-requires=(zsh git gawk svn unzip)
+requires=(zsh git gawk svn unzip wget)
 
 _check_requires() {
   echo "$(tput setaf 2)Checking dependencies...$(tput sgr0)"
@@ -21,6 +21,9 @@ _uninstall_zplugin() {
 
 pkg.install() {
   _check_requires || exit $?
+
+  tic -x $PKG_PATH/.terminfo/xterm-256color-italic.terminfo
+  tic -x $PKG_PATH/.terminfo/tmux.terminfo
 }
 
 pkg.pull() {
