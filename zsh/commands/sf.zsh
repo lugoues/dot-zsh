@@ -12,7 +12,7 @@
     local margin=20 # number of lines above and below search result.
     local preview_cmd='search={};file=$(echo $search | cut -d':' -f 1 );'
     preview_cmd+="margin=$margin;" # Inject value into scope.
-    preview_cmd+='line=$(echo $search | cut -d':' -f 2 ); ext=$(echo $file(:e));'
+    preview_cmd+='line=$(echo $search | cut -d':' -f 2 ); ext=$(echo ${file##*.});'
     preview_cmd+='tail -n +$(( $(( $line - $margin )) > 0 ? $(($line-$margin)) : 0)) $file | head -n $(($margin*2+1)) |'
     preview_cmd+='bat --paging=never --color=always --style=plain --language=$ext --highlight-line $(($margin+1))'
 

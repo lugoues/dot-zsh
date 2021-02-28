@@ -1,4 +1,4 @@
-# ToDo:
+#cdreplay ToDo:
 #  - z-a-rust
 #  - add custom configuration for p10k lean theme so it can actually be updated without overwriting custom changes
 
@@ -46,6 +46,10 @@ ZCONFIG="${HOME}/.zsh"
               wait light-mode \
               for @arcticicestudio/nord-dircolors
 
+  zinit lucid atload:'_zsh_autosuggest_start' \
+              wait lucid light-mode \
+              for @zsh-users/zsh-autosuggestions
+
 # Tooling
   zinit lucid from:'gh-r' \
               as:'program' \
@@ -73,6 +77,16 @@ ZCONFIG="${HOME}/.zsh"
               mv:'exa* -> exa' \
               light-mode \
               for @ogham/exa
+
+  zinit lucid from:'gh-r' \
+              as:'program' \
+              mv:'direnv* -> direnv' \
+              atclone:'./direnv hook zsh > zhook.zsh' \
+              atpull:'%atclone' \
+              pick:'direnv' \
+              src="zhook.zsh" \
+              for @direnv/direnv
+
 
   # can't wait because of loading issues
   zinit lucid from:'gh-r' \
@@ -104,6 +118,11 @@ ZCONFIG="${HOME}/.zsh"
               wait nocompletions light-mode \
               for @b4b4r07/enhancd
 
+  zinit lucid from:'gh' \
+              as:'program' \
+              wait  light-mode \
+              for @rewindio/aws-connect
+
   zinit ice lucid as"program" from"gh-r"
   zinit load junegunn/fzf-bin
 
@@ -111,6 +130,23 @@ ZCONFIG="${HOME}/.zsh"
           id-as"junegunn/fzf_completions" \
           multisrc"shell/{completion,key-bindings}.zsh"
   zinit light junegunn/fzf
+
+  zinit lucid from:'gh' \
+              as:'plugin' \
+              wait light-mode \
+              for @paulirish/git-open
+
+  zinit lucid from:'gh-r' \
+              as:'program' \
+              mv:'fx* -> fx' \
+              wait light-mode \
+              for @antonmedv/fx
+
+  zinit lucid from:'gh-r' \
+              as:'program' \
+              mv:'jq* -> jq' \
+              wait light-mode \
+              for @/stedolan/jq
 
 # Generated Completions
   zinit ice has:'nodenv' \
@@ -153,6 +189,12 @@ ZCONFIG="${HOME}/.zsh"
             as:'completion' \
             wait:'1' silent
   zinit snippet https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer
+
+  zinit lucid from:'gh' \
+              as:'program' \
+              src:'asdf.sh' \
+              wait light-mode \
+              for @asdf-vm/asdf
 
 # Completions
   # zinit wait'1' lucid atload"zicompinit; zicdreplay" blockf for \
@@ -278,3 +320,5 @@ ZCONFIG="${HOME}/.zsh"
 # Local Config Settings {{{
   [[ -f "${HOME}/.zshrc.local" ]] && source ${HOME}/.zshrc.local
 #}}}
+
+autoload bashcompinit && bashcompinit
