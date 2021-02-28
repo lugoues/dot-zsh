@@ -63,15 +63,3 @@ fi
   zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 #}}}
 
-# fzf Styling {{{
-export FZF_DEFAULT_OPTS='
-    --color=fg:#d8dee9,hl:#81a1c1
-    --color=fg+:#d8dee9,hl+:#81a1c1
-    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
-# export FZF_DEFAULT_OPTS="
-#   --color=bg+:#282a2e,bg:#131416,spinner:#8abeb7,hl:#81a2be
-#   --color=fg:#b4b7b4,header:#81a2be,info:#f0c674,pointer:#8abeb7
-#   --color=marker:#8abeb7,fg+:#e0e0e0,prompt:#f0c674,hl+:#81a2be
-# "
-#}}
