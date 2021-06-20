@@ -92,6 +92,7 @@ ZCONFIG="${HOME}/.zsh"
   zinit lucid from:'gh-r' \
               as:'program' \
               mv:'zoxide* -> zoxide' \
+              pick:'zoxide/zoxide' \
               atload:'!eval "$(zoxide init zsh)"' \
               atload:'export _ZO_DATA_DIR=$HOME/.local/share' \
               light-mode \
