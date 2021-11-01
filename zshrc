@@ -36,7 +36,8 @@ ZCONFIG="${HOME}/.zsh"
   zinit lucid from:'gh' \
               atload:'fast-theme $ZCONFIG/themes/fsh/nord.ini > /dev/null' \
               light-mode \
-              for @zdharma/fast-syntax-highlighting
+              for @zdharma-continuum/fast-syntax-highlighting
+              # for @zdharma/fast-syntax-highlighting
 
   zinit lucid atclone:'dircolors -b src/dir_colors > c.zsh' \
               atpull:'%atclone' \
@@ -162,14 +163,14 @@ ZCONFIG="${HOME}/.zsh"
             as:'null' \
             atload:'eval "$(nodenv init - --no-rehash zsh)"' \
             wait silent nocompile
-  zinit light zdharma/null
+  zinit light zdharma-continuum/null
 
   zinit ice has:'pyenv' \
               id-as:'pyenv-setup' \
               as:'null' \
               atload: 'eval "$(pyenv init --no-rehash --path)"' \
               wait silent nocompile'!'
-  zinit light zdharma/null
+  zinit light zdharma-continuum/null
               # atload:'eval "$(pyenv init - --no-rehash zsh)"' \
 
   zinit ice has:'pyenv-virtualenv' \
@@ -177,14 +178,14 @@ ZCONFIG="${HOME}/.zsh"
             as:'null' \
             atload:'eval "$(pyenv virtualenv-init - --no-rehash zsh)"' \
             wait silent nocompile
-  zinit light zdharma/null
+  zinit light zdharma-continuum/null
 
   zinit ice has:'broot' \
             id-as:'broot-setup' \
             as:'null' \
             atload:'eval "$(broot --print-shell-function zsh)"' \
             wait silent nocompile
-  zinit light zdharma/null
+  zinit light zdharma-continuum/null
 
   zinit ice has'eksctl' \
             id-as'eksctl-setup' \
@@ -192,7 +193,7 @@ ZCONFIG="${HOME}/.zsh"
             atclone'eksctl completion zsh >! _eksctl' \
             atpull'%atclone' \
             wait'1' silent nocompile run-atpull
-  zinit light zdharma/null
+  zinit light zdharma-continuum/null
 
 # Plugins
   #OMZ
