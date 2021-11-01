@@ -167,9 +167,10 @@ ZCONFIG="${HOME}/.zsh"
   zinit ice has:'pyenv' \
               id-as:'pyenv-setup' \
               as:'null' \
-              atload:'eval "$(pyenv init - --no-rehash zsh)"' \
+              atload: 'eval "$(pyenv init --no-rehash --path)"' \
               wait silent nocompile'!'
   zinit light zdharma/null
+              # atload:'eval "$(pyenv init - --no-rehash zsh)"' \
 
   zinit ice has:'pyenv-virtualenv' \
             id-as:'pyenv-virtualenv-setup' \
