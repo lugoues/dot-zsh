@@ -218,7 +218,7 @@ ZCONFIG="${HOME}/.zsh"
          as:'completion' \
          for \
           zsh-users/zsh-completions \
-          has:'exa' https://github.com/ogham/exa/blob/master/completions/completions.zsh \
+          has:'exa' https://github.com/ogham/exa/blob/master/completions/zsh/_exa \
           has:'pyenv' https://github.com/pyenv/pyenv/blob/master/completions/pyenv.zsh \
           has:'docker' https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose \
           has:'docker' https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker \
