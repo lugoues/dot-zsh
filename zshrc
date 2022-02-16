@@ -202,12 +202,11 @@ ZCONFIG="${HOME}/.zsh"
 # Plugins
   #OMZ
   zinit lucid wait svn is-snippet for \
-    if:'[[ ${OSTYPE} = darwin* ]]' OMZ::plugins/osx \
+    if:'[[ ${OSTYPE} = darwin* ]]' OMZ::plugins/macos \
     has:'brew'      OMZ::plugins/brew \
     has:'pip'       OMZ::plugins/pip \
     has:'tmux'      OMZ::plugins/tmux \
-    has:'gpg-agent' OMZ::plugins/gpg-agent \
-    has:'mosh'      OMZ::plugins/mosh
+    has:'gpg-agent' OMZ::plugins/gpg-agent
 
 # Load Configuration
   zinit ice lucid as'local-configuration' atinit'local i; for i in configuration/*.zsh; do source $i; done'
