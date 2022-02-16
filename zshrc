@@ -126,7 +126,7 @@ ZCONFIG="${HOME}/.zsh"
               for @rewindio/aws-connect
 
   zinit ice lucid as"program" from"gh-r"
-  zinit load junegunn/fzf-bin
+  zinit load junegunn/fzf
 
   zinit ice lucid \
           id-as"junegunn/fzf_completions" \
