@@ -157,6 +157,10 @@ ZCONFIG="${HOME}/.zsh"
               wait light-mode \
               for @asdf-vm/asdf
 
+  zinit lucid from:'gh-r' \
+              as:'program' \
+              wait light-mode \
+              for @sayanarijit/xplr
 # Generated Completions
   zinit ice has:'nodenv' \
             id-as:'nodev-setup' \
