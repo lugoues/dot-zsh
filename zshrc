@@ -1,3 +1,10 @@
+# Due to an issue with MacOS and IntelliJ you need to check
+# if you are in an IntelliJ process and abort loading anything custom
+# See: https://youtrack.jetbrains.com/articles/IDEA-A-19/Shell-Environment-Loading
+  if [[ $INTELLIJ_ENVIRONMENT_READER ]]; then
+    return
+  fi
+
 #cdreplay ToDo:
 #  - z-a-rust
 #  - add custom configuration for p10k lean theme so it can actually be updated without overwriting custom changes
@@ -63,6 +70,7 @@ ZCONFIG="${HOME}/.zsh"
               as:'program' \
               bpick:'*x86_64*' \
               mv:'bat* -> bat' \
+              atload:'export BAT_CONFIG_PATH="$HOME/.local/etc/bat.conf"' \
               pick:'bat/bat' \
               light-mode \
               for @sharkdp/bat
@@ -76,6 +84,7 @@ ZCONFIG="${HOME}/.zsh"
   zinit lucid from:'gh-r' \
               as:'program' \
               mv:'exa* -> exa' \
+              pick:'bin/exa' \
               light-mode \
               for @ogham/exa
 
@@ -112,6 +121,12 @@ ZCONFIG="${HOME}/.zsh"
               wait light-mode \
               for @denisidoro/navi
               # atload:'export NAVI_PATH="$HOME/Library/Application Support/navi/cheats:$HOME/.zsh/cheats:$HOME/.local/share/navi/cheats"' \
+
+  zinit lucid from:'gh-r' \
+              as:'program' \
+              pick:'viddy' \
+              wait light-mode \
+              for @sachaos/viddy
 
   zinit lucid from:'gh' \
               as:'program' \
@@ -161,6 +176,18 @@ ZCONFIG="${HOME}/.zsh"
               as:'program' \
               wait light-mode \
               for @sayanarijit/xplr
+
+  # zinit lucid from:'gh-r' \
+  #             as:'program' \
+  #             mv:'atuin* -> atuin' \
+  #             bpick:"*$(uname)*" \
+  #             pick:'atuin/atuin' \
+  #             atload:'!export ATUIN_NOBIND="true"; eval "$(atuin init zsh)"; bindkey "^r" _atuin_search_widget;' \
+  #             wait light-mode \
+  #             for @ellie/atuin
+  #             # atclone:'chmod go+x ./* -R' \
+  #             # wait #light-mode \
+
 # Generated Completions
   zinit ice has:'nodenv' \
             id-as:'nodev-setup' \
@@ -169,20 +196,26 @@ ZCONFIG="${HOME}/.zsh"
             wait silent nocompile
   zinit light zdharma-continuum/null
 
-  zinit ice has:'pyenv' \
-              id-as:'pyenv-setup' \
-              as:'null' \
-              atload: 'eval "$(pyenv init --no-rehash --path)"' \
-              wait silent nocompile'!'
-  zinit light zdharma-continuum/null
-              # atload:'eval "$(pyenv init - --no-rehash zsh)"' \
+  # zinit ice has:'pyenv' \
+  #             id-as:'pyenv-setup' \
+  #             as:'null' \
+  #             atload: 'eval "$(pyenv init --no-rehash --path)"' \
+  #             wait silent nocompile'!'
+  # zinit light zdharma-continuum/null
+  #             # atload:'eval "$(pyenv init - --no-rehash zsh)"' \
 
-  zinit ice has:'pyenv-virtualenv' \
-            id-as:'pyenv-virtualenv-setup' \
-            as:'null' \
-            atload:'eval "$(pyenv virtualenv-init - --no-rehash zsh)"' \
-            wait silent nocompile
-  zinit light zdharma-continuum/null
+  # zinit ice has:'pyenv-virtualenv' \
+  #           id-as:'pyenv-virtualenv-setup' \
+  #           as:'null' \
+  #           atload:'eval "$(pyenv virtualenv-init - --no-rehash zsh)"' \
+  #           wait silent nocompile
+  # zinit light zdharma-continuum/null
+
+  zinit ice atclone'cat <(pyenv init - --no-rehash) <(pyenv virtualenv-init -) > zhook.zsh'  \
+            atpull'%atclone' \
+            pick="zhook.zsh" nocompile'!' \
+            id-as"pyenv-test" \
+  zinit light     https://gist.github.com/agoose77/0a3f6c4527272ad06afd1a0788104280/raw
 
   zinit ice has:'broot' \
             id-as:'broot-setup' \
@@ -229,6 +262,7 @@ ZCONFIG="${HOME}/.zsh"
           has:'pyenv' https://github.com/pyenv/pyenv/blob/master/completions/pyenv.zsh \
           has:'tdlr' https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer
 #}}}
+          # has:'exa' https://github.com/ogham/exa/blob/master/completions/completions.zsh \
 
 # Paths {{{
   typeset -U fpath # make paths unique
@@ -313,3 +347,8 @@ ZCONFIG="${HOME}/.zsh"
 #}}}
 
 # autoload bashcompinit && bashcompinit
+
+source /Users/pbrunner/.config/broot/launcher/bash/br
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
