@@ -60,15 +60,17 @@ ZCONFIG="${HOME}/.zsh"
 
 # Tooling
   zinit lucid from:'gh-r' \
+              if:'[[ ! -n "$commands[fd]" ]]' \
               as:'program' \
-              atclone:'chmod go-w ./* -R' \
+              mv:'fd* -> fd' \
+              pick:'fd/fd' \
               atpull:'%atclone%' \
               light-mode \
               for @sharkdp/fd
 
   zinit lucid from:'gh-r' \
+              if:'[[ ! -n "$commands[bat]" ]]' \
               as:'program' \
-              bpick:'*x86_64*' \
               mv:'bat* -> bat' \
               atload:'export BAT_CONFIG_PATH="$HOME/.local/etc/bat.conf"' \
               pick:'bat/bat' \
@@ -91,9 +93,9 @@ ZCONFIG="${HOME}/.zsh"
   zinit lucid from:'gh-r' \
               as:'program' \
               mv:'direnv* -> direnv' \
-              atclone:'./direnv hook zsh > zhook.zsh' \
-              atpull:'%atclone' \
               pick:'direnv' \
+              atclone:'direnv hook zsh >| zhook.zsh' \
+              atpull:'%atclone' \
               src="zhook.zsh" \
               for @direnv/direnv
 
@@ -115,7 +117,7 @@ ZCONFIG="${HOME}/.zsh"
 
   zinit lucid from:'gh-r' \
               as:'program' \
-              atclone:'./navi widget zsh >! znavi.zsh' \
+              atclone:'navi widget zsh >! znavi.zsh' \
               atpull:'%atclone' \
               src:'znavi.zsh' \
               wait light-mode \
@@ -155,6 +157,7 @@ ZCONFIG="${HOME}/.zsh"
               for @paulirish/git-open
 
   zinit lucid from:'gh-r' \
+              if:'[[ ! -n "$commands[fx]" ]]' \
               as:'program' \
               mv:'fx* -> fx' \
               wait light-mode \
@@ -347,8 +350,6 @@ ZCONFIG="${HOME}/.zsh"
 #}}}
 
 # autoload bashcompinit && bashcompinit
-
-source /Users/pbrunner/.config/broot/launcher/bash/br
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
