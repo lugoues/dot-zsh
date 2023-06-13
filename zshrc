@@ -180,16 +180,23 @@ ZCONFIG="${HOME}/.zsh"
               wait light-mode \
               for @sayanarijit/xplr
 
-  # zinit lucid from:'gh-r' \
-  #             as:'program' \
-  #             mv:'atuin* -> atuin' \
-  #             bpick:"*$(uname)*" \
-  #             pick:'atuin/atuin' \
-  #             atload:'!export ATUIN_NOBIND="true"; eval "$(atuin init zsh)"; bindkey "^r" _atuin_search_widget;' \
-  #             wait light-mode \
-  #             for @ellie/atuin
-  #             # atclone:'chmod go+x ./* -R' \
-  #             # wait #light-mode \
+  zinit ice has:'atuin' \
+	    id-as:'atuin' \
+	    as:'null' \
+	    atclone:'
+cat <<- EOF >| ~/.config/atuin/config.toml 
+style = "compact"
+inline_height = 15
+filter_mode = "host"
+auto_sync = true
+sync_frequency = "5m"
+search_mode = "fuzzy"
+exit_mode = "return-query"
+EOF' \
+            atpull'%atclone' \
+            wait silent nocompile
+  zinit light zdharma-continuum/null
+
 
 # Generated Completions
   zinit ice has:'nodenv' \
