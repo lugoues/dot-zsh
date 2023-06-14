@@ -190,7 +190,7 @@ inline_height = 15
 filter_mode = "host"
 auto_sync = true
 sync_frequency = "5m"
-search_mode = "fuzzy"
+search_mode = "skim"
 exit_mode = "return-query"
 EOF' \
             atpull'%atclone' \
