@@ -105,7 +105,7 @@ ZCONFIG="${HOME}/.zsh"
               mv:'zoxide* -> zoxide' \
               pick:'zoxide/zoxide' \
               atload:'!eval "$(zoxide init zsh)"' \
-              atload:'export _ZO_DATA_DIR=$HOME/.local/share' \
+              atload:'export _ZO_DATA_DIR=$HOME/.local/share/zoxide' \
               light-mode \
               for @ajeetdsouza/zoxide
 
