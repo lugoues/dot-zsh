@@ -107,13 +107,13 @@
 #   alias kclean="sudo apt-get remove $(dpkg -l|egrep '^ii  linux-(im|he)'|awk '{print $2}'|grep -v `uname -r`)"
 # fi
 
-# # # exa
-# # if (( ${+commands[exa]} )); then
-# #   alias ls='exa'
-# #   alias ll='exa -l'
-# #   alias lll='exa -l | less'
-# #   alias lla='exa -la'
-# #   alias lt='exa -T'
-# #   alias llfu='exa -bghHliS --git'
-# # fi
+# eza
+if (( ${+commands[eza]} )); then
+  alias ls='eza'
+  alias ll='eza -l'
+  alias lll='eza -l | less'
+  alias lla='eza -la'
+  alias lt='eza -T'
+  alias llfu='eza -bghHliS --git'
+fi
 

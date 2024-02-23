@@ -85,10 +85,9 @@ ZCONFIG="${HOME}/.zsh"
 
   zinit lucid from:'gh-r' \
               as:'program' \
-              mv:'exa* -> exa' \
-              pick:'bin/exa' \
+              pick:'bin/eza' \
               light-mode \
-              for @ogham/exa
+              for @eza-community/eza
 
   zinit lucid from:'gh-r' \
               as:'program' \
