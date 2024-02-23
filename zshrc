@@ -183,7 +183,7 @@ ZCONFIG="${HOME}/.zsh"
 	    id-as:'atuin' \
 	    as:'null' \
 	    atclone:'
-cat <<- EOF >| ~/.config/atuin/config.toml 
+cat <<- EOF >| ~/.config/atuin/config.toml
 style = "compact"
 inline_height = 15
 filter_mode = "host"
