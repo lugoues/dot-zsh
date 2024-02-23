@@ -11,3 +11,6 @@ zle -N backward-kill-dir
 bindkey '^[^?' backward-kill-dir
 
 bindkey '\ep' push-line-or-edit
+
+# emacs mode
+bindkey -e
