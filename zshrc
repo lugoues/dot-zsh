@@ -264,7 +264,6 @@ EOF' \
          as:'completion' \
          for \
           zsh-users/zsh-completions \
-          has:'exa' https://github.com/eza-community/eza/blob/master/completions/zsh/_eza \
           has:'pyenv' https://github.com/pyenv/pyenv/blob/master/completions/pyenv.zsh \
           has:'pyenv' https://github.com/pyenv/pyenv/blob/master/completions/pyenv.zsh \
           has:'tdlr' https://raw.githubusercontent.com/dbrgn/tealdeer/master/zsh_tealdeer
