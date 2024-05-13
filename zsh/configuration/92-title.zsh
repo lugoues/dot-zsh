@@ -9,7 +9,7 @@ stt_both  () { setTerminalText 0 $@; }
 stt_tab   () { setTerminalText 1 $@; }
 stt_title () { setTerminalText 2 $@; }
 set-window-title() {
-  stt_both "${HOST}"
+  stt_both "${HOST/.*/}"
 }
 
 PR_TITLEBAR=''
